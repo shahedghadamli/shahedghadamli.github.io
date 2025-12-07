@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>بازی کسرها - ساده‌سازی و تساوی</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #e4ebf5;
+      --card-bg: #f7f9fc;
+      --accent: #4f46e5;
+      --accent-soft: #e5e7eb;
+      --accent-strong: #4338ca;
+      --danger: #e53935;
+      --success: #2e7d32;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --gold: #fbbf24;
+      --shadow-soft: 14px 14px 30px rgba(163, 177, 198, 0.8),
+                     -10px -10px 25px rgba(255, 255, 255, 0.9);
+      --shadow-soft-sm: 6px 6px 14px rgba(163, 177, 198, 0.65),
+                        -4px -4px 12px rgba(255, 255, 255, 0.9);
+      --shadow-inset: inset 5px 5px 12px rgba(163, 177, 198, 0.6),
+                      inset -5px -5px 12px rgba(255, 255, 255, 0.9);
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Vazirmatn", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 400;
+      background: radial-gradient(circle at top left, #dbeafe 0%, #e4ebf5 40%, #e0f2fe 100%);
+      direction: rtl;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 100vh;
+      padding: 110px 16px 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #top-banner {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+      text-align: center;
+      color: #1f2933;
+      padding: 10px 8px 6px;
+      z-index: 100;
+      background: rgba(244, 247, 252, 0.98);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+      backdrop-filter: blur(6px);
+    }
+
+    #top-banner .bismillah {
+      font-size: 15px;
+      font-weight: 700;
+      color: #4338ca;
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+      text-shadow: 0 1px 3px rgba(79, 70, 229, 0.3);
+      display: inline-block;
+      padding: 2px 10px 4px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #eef2ff, #e0f2fe);
+      border: 1px solid rgba(129, 140, 248, 0.4);
+    }
+
+    #top-banner .school-name {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    #top-banner .dev-name {
+      font-size: 13px;
+      margin-top: 4px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    #game-container {
+      width: 100%;
+      max-width: 620px;
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 0 0 18px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      transform-origin: center;
+      animation: float-card 6s ease-in-out infinite;
+      margin-top: 8px;
+    }
+
+    @keyframes float-card {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .header {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      padding: 14px 18px 16px;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset-inline-end: 18px;
+      inset-block-end: -16px;
+      width: 90px;
+      height: 32px;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.6), transparent 70%);
+      opacity: 0.6;
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: clamp(20px, 4.2vw, 24px);
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    #subtitle {
+      margin: 0;
+      font-size: 12px;
+      opacity: 0.95;
+      font-weight: 400;
+    }
+
+    .header-row {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .mode-buttons,
+    .level-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip-button {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 11px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.15);
+      color: #e5e7eb;
+      backdrop-filter: blur(6px);
+      transition: all 0.18s ease;
+      min-width: 78px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-weight: 500;
+    }
+
+    .chip-button span.icon {
+      font-size: 13px;
+      display: inline-block;
+    }
+
+    .chip-button.inactive {
+      background: rgba(15,23,42,0.18);
+      color: #cbd5f5;
+      opacity: 0.85;
+      box-shadow: none;
+    }
+
+    .chip-button:not(.inactive) {
+      background: #f9fafb;
+      color: #4f46e5;
+      box-shadow: var(--shadow-soft-sm);
+    }
+
+    .chip-button:not(.inactive):active {
+      box-shadow: var(--shadow-inset);
+      transform: translateY(1px);
+    }
+
+    .chip-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 10px rgba(15,23,42,0.25);
+    }
+
+    .main-body {
+      padding: 12px 16px 18px;
+    }
+
+    .info-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      background: #eef2ff;
+      border-radius: var(--radius-lg);
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-soft-sm);
+    }
+
+    .score-box-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-weight: 500;
+    }
+
+    #score-box, #best-box {
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    #best-box span {
+      color: #fbbf24;
+      font-weight: 700;
+    }
+
+    .timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e0e7ff;
+      box-shadow: var(--shadow-soft-sm);
+      font-size: 12px;
+      color: #1e293b;
+      font-weight: 500;
+      transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease, color 0.25s ease;
+    }
+
+    .timer-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #c7d2fe);
+      box-shadow: 3px 3px 7px rgba(148, 163, 184, 0.7),
+                  -2px -2px 5px rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+    }
+
+    .timer-text span {
+      font-weight: 700;
+    }
+
+    .timer-pill.timer-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.6);
+      animation: timer-pulse 0.8s infinite;
+    }
+
+    @keyframes timer-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 11px;
+      white-space: nowrap;
+      box-shadow: var(--shadow-soft-sm);
+      font-weight: 500;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .info-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    /* بج را به سمت چپ می‌برد تا دکمه‌ها سمت راست ردیف شوند */
+    .info-actions .badge {
+      margin-left: auto;
+    }
+
+    .combo-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .combo-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .combo-label strong {
+      color: #16a34a;
+    }
+
+    .stars-bar {
+      display: inline-flex;
+      gap: 3px;
+      align-items: center;
+    }
+
+    .star-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fef3c7;
+      box-shadow: var(--shadow-soft-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #fbbf24;
+      opacity: 0.3;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .star-icon.active {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    #question-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft-sm);
+      padding: 14px 12px 14px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    #question-card::before {
+      content: "";
+      position: absolute;
+      inset-inline-start: 0;
+      top: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(96,165,250,0.9),
+        rgba(129,140,248,0.9)
+      );
+    }
+
+    #question-text {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: clamp(16px, 4.2vw, 19px);
+      margin: 0;
+      line-height: 1.8;
+      padding-inline-start: 8px;
+      font-weight: 500;
+    }
+
+    .fraction {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 4px;
+      vertical-align: middle;
+    }
+
+    .fraction .top {
+      border-bottom: 2px solid #111827;
+      padding: 0 6px 2px;
+      font-weight: 600;
+      transform: translateY(-1px);
+    }
+
+    .fraction .bottom {
+      padding: 2px 6px 0;
+      font-weight: 600;
+      transform: translateY(1px);
+    }
+
+    #options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .option-btn {
+      padding: 11px 4px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      background: var(--accent-soft);
+      color: var(--text-main);
+      box-shadow: var(--shadow-soft-sm);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s;
+      font-size: 16px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 6px 6px 16px rgba(163, 177, 198, 0.8),
+                  -6px -6px 16px rgba(255, 255, 255, 0.95);
+      filter: brightness(1.03);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+      opacity: 0.9;
+    }
+
+    .option-btn.correct {
+      background: #bbf7d0 !important;
+      box-shadow: none;
+      border: 1px solid #16a34a;
+    }
+
+    .option-btn.wrong {
+      background: #fecaca !important;
+      box-shadow: none;
+      border: 1px solid #ef4444;
+    }
+
+    #feedback {
+      margin-top: 10px;
+      min-height: 26px;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @keyframes feedback-blink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    .feedback-correct {
+      color: #2e7d32;
+      animation: feedback-blink 0.8s linear 2;
+    }
+
+    .feedback-wrong {
+      color: #c62828;
+      animation: feedback-blink 0.8s linear 2;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    .pop-animate {
+      animation: pop 0.4s ease-out;
+    }
+
+    @keyframes correct-flash {
+      0% {
+        transform: scale(0.9);
+        box-shadow: 0 0 0 rgba(34, 197, 94, 0.0);
+      }
+      40% {
+        transform: scale(1.06);
+        box-shadow: 0 0 18px rgba(34, 197, 94, 0.65);
+      }
+      70% {
+        transform: scale(1.02);
+        box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: var(--shadow-soft-sm);
+      }
+    }
+
+    .option-btn.correct.pop-animate {
+      animation: correct-flash 0.5s ease-out;
+    }
+
+    .correct-effect-container {
+      position: absolute;
+      inset: 0;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .correct-ring,
+    .correct-particle {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .correct-ring {
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 999px;
+      border: 2px solid rgba(34, 197, 94, 0.7);
+      transform: translate(-50%, -50%) scale(0.4);
+      opacity: 0;
+      animation: correct-ring-anim 0.5s ease-out forwards;
+    }
+
+    @keyframes correct-ring-anim {
+      0% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(0.4);
+      }
+      70% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.4);
+      }
+    }
+
+    .correct-particle {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      opacity: 0.9;
+      transform-origin: center;
+      animation: correct-particle-anim 0.45s ease-out forwards;
+    }
+
+    @keyframes correct-particle-anim {
+      0% {
+        transform: translate(0, 0) scale(0.4);
+        opacity: 0.95;
+      }
+      70% {
+        transform: translate(var(--dx), var(--dy)) scale(1);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translate(calc(var(--dx) * 1.3), calc(var(--dy) * 1.3)) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    /* دکمه سؤال بعدی */
+    #next-btn {
+      margin-top: 16px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(79, 70, 229, 0.28);
+      cursor: pointer;
+      background: linear-gradient(135deg, #eef2ff, #e0f2fe);
+      color: #1e293b;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      box-shadow:
+        8px 8px 18px rgba(148, 163, 184, 0.75),
+        -6px -6px 16px rgba(255, 255, 255, 0.95);
+      transition: transform 0.15s ease,
+                  box-shadow 0.2s ease,
+                  background 0.2s ease,
+                  border-color 0.2s ease;
+      width: 100%;
+      max-width: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-inline: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #next-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 10% 0%, rgba(255,255,255,0.7), transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    #next-btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    #next-btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        10px 10px 22px rgba(148, 163, 184, 0.8),
+        -8px -8px 18px rgba(255, 255, 255, 0.98);
+      background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+      border-color: rgba(79, 70, 229, 0.5);
+    }
+
+    #next-btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: var(--shadow-inset);
+      background: linear-gradient(135deg, #dde3ff, #cbd5f5);
+    }
+
+    #summary-card {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-lg);
+      background: #eef2ff;
+      box-shadow: var(--shadow-soft-sm);
+      font-size: 13px;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    #summary-card strong {
+      color: #4f46e5;
+    }
+
+    #help-overlay,
+    #about-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    #help-card,
+    #about-card {
+      background: #f9fafb;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 18px 14px;
+      max-width: 520px;
+      width: 90%;
+      text-align: right;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    #help-card h2,
+    #about-card h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--accent-strong);
+    }
+
+    #about-card h2 {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #help-card p,
+    #about-card p {
+      margin: 4px 0;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 120px 10px 10px;
+      }
+      #game-container {
+        border-radius: 22px;
+      }
+      #options {
+        grid-template-columns: 1fr;
+      }
+      .mode-buttons button,
+      .level-buttons button {
+        flex: 1 1 40%;
+        justify-content: center;
+      }
+      #question-text {
+        font-size: 17px;
+      }
+      .option-btn {
+        font-size: 17px;
+      }
+    }
+
+    @media (min-width: 900px) {
+      body {
+        padding: 120px 32px 32px;
+      }
+      #game-container {
+        max-width: 620px;
+      }
+      #top-banner {
+        max-width: 620px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="top-banner">
+    <div class="bismillah">به نام آفریدگار اندیشه و آگاهی؛ پدیدآورنده‌ی حکمت و دانایی</div>
+    <div class="school-name">دبستان شاهد پسرانه مهندس قدم لی شبستر</div>
+    <div class="dev-name">توسعه دهنده : علی اکبر بابائی</div>
+  </div>
+
+  <div id="game-container">
+    <div class="header">
+      <h1>بازی کسرها</h1>
+      <p id="subtitle">ساده‌سازی و یافتن کسرهای مساوی – مناسب پایه چهارم دبستان</p>
+
+      <div class="header-row">
+        <div class="mode-buttons">
+          <button id="mode-simplify" class="chip-button">
+            <span class="icon">✏️</span>
+            <span>ساده کردن</span>
+          </button>
+          <button id="mode-equivalent" class="chip-button inactive">
+            <span class="icon">⚖️</span>
+            <span>کسرهای مساوی</span>
+          </button>
+        </div>
+
+        <div class="level-buttons">
+          <button id="level-easy" class="chip-button">
+            <span class="icon">🙂</span>
+            <span>آسان</span>
+          </button>
+          <button id="level-medium" class="chip-button inactive">
+            <span class="icon">😎</span>
+            <span>متوسط</span>
+          </button>
+          <button id="level-hard" class="chip-button inactive">
+            <span class="icon">🤓</span>
+            <span>سخت</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-body">
+      <div class="info-strip">
+        <div class="score-box-group">
+          <div id="score-box">
+            امتیاز: <span id="score">۰</span> از <span id="total">۰</span>
+          </div>
+          <div id="best-box">
+            بهترین رکورد: <span id="best-score">۰</span>
+          </div>
+        </div>
+
+        <div class="timer-pill" id="timer-pill">
+          <div class="timer-icon">⏰</div>
+          <div class="timer-text">
+            زمان: <span id="timer">۲۵</span> ثانیه
+          </div>
+        </div>
+
+        <div class="info-actions">
+          <!-- دکمه‌ها از راست به چپ: راهنما، صدا، درباره؛ بج سمت چپ -->
+		  <div class="badge">
+            <span class="badge-dot"></span>
+            تمرین تعاملی کسرها
+          </div>
+		  
+          <button id="help-btn" class="chip-button" type="button">
+            <span class="icon">❓</span>
+            <span>راهنما</span>
+          </button>
+          
+          <button id="about-btn" class="chip-button" type="button">
+            <span class="icon">ℹ️</span>
+            <span>دربارهٔ بازی</span>
+          </button>
+		  <button id="sound-btn" class="chip-button" type="button">
+            <span class="icon" id="sound-icon">🔊</span>
+            <span>صدا</span>
+          </button>          
+        </div>
+      </div>
+
+      <div class="combo-row">
+        <div class="combo-label">
+          🔥 کمبو: <strong><span id="combo-count">۰</span>x</strong>
+        </div>
+        <div class="stars-bar">
+          <div class="star-icon" id="star-1">★</div>
+          <div class="star-icon" id="star-2">★</div>
+          <div class="star-icon" id="star-3">★</div>
+        </div>
+      </div>
+
+      <div id="question-card">
+        <p id="question-text"></p>
+        <div id="options"></div>
+      </div>
+
+      <div id="feedback"></div>
+
+      <button id="next-btn">
+        <span>سؤال بعدی</span>
+      </button>
+
+      <div id="summary-card"></div>
+    </div>
+  </div>
+
+  <div id="help-overlay">
+    <div id="help-card">
+      <h2>راهنمای بازی کسرها</h2>
+      <p>۱. در حالت «ساده کردن»، باید صورت و مخرج کسر را تا جایی که می‌شود با یک عدد مشترک تقسیم کنی تا کسر ساده‌تر شود.</p>
+      <p>۲. در حالت «کسرهای مساوی»، باید کسری را انتخاب کنی که اگر آن را ساده کنیم، با کسر سؤال برابر باشد.</p>
+      <p>۳. هر پاسخ درست امتیاز دارد؛ اگر چند پاسخ درست پشت سر هم بدهی، امتیاز کمبو هم می‌گیری و ستاره‌ها روشن می‌شوند.</p>
+      <p>۴. اگر زمان تمام شود، کسر درست برایت نمایش داده می‌شود تا یاد بگیری.</p>
+      <button id="help-close" class="chip-button" type="button">
+        بستن
+      </button>
+    </div>
+  </div>
+
+  <div id="about-overlay">
+    <div id="about-card">
+      <h2>
+        <span class="icon">ℹ️</span>
+        هدف و سازندهٔ بازی
+      </h2>
+      <p>این بازی برای تمرین و تقویت مهارت ساده‌سازی کسرها و تشخیص کسرهای مساوی، ویژهٔ دانش‌آموزان پایهٔ چهارم دبستان طراحی شده است.</p>
+      <p>با انجام پرسش‌های متنوع و زمان‌دار، دانش‌آموز به‌صورت تعاملی و سرگرم‌کننده با مفهوم صورت، مخرج، ساده‌سازی و تساوی کسرها آشنا می‌شود.</p>
+      <p>توسعه دهندهٔ بازی : علی اکبر بابائی، آموزگار شاغل در دبستان شاهد پسرانهٔ مهندس قدم‌لی شبستر.</p>
+      <button id="about-close" class="chip-button" type="button">
+        بستن
+      </button>
+    </div>
+  </div>
+
+  <script src="obfuscated.js"></script>
+</body>
+</html>
