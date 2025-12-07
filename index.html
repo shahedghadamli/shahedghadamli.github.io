@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>شهر ریاضی - محله ضرب ها</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- فونت وزیرمتن با اعداد فارسی -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        :root {
+            --font-primary: 'Vazirmatn', sans-serif;
+            --font-numbers: 'Vazirmatn', sans-serif;
+            --level1-bg: linear-gradient(135deg, #90EE90, #98FB98);
+            --shadow-color: rgba(0, 0, 0, 0.25);
+        }
+        
+        * { 
+            box-sizing: border-box; 
+            -moz-font-feature-settings: "ss01";
+            -webkit-font-feature-settings: "ss01";
+            font-feature-settings: "ss01";
+        }
+
+        body {
+            direction: rtl;
+            text-align: right;
+            font-family: var(--font-primary);
+            font-weight: 300;
+            margin: 0;
+            padding: 0;
+            background: var(--level1-bg);
+            color: #212121;
+            animation: fadeIn 1s ease-in;
+            line-height: 1.6;
+            transition: background 0.8s ease;
+            overflow-x: hidden;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+        @keyframes highlightHint { 0% { background-color: #fff; transform: scale(1); } 50% { background-color: #E1BEE7; transform: scale(1.02); } 100% { background-color: #fff; transform: scale(1); } }
+        @keyframes blinkRect { 
+            0% { opacity: 0.5; box-shadow: 0 0 5px rgba(255,255,255,0.8); } 
+            50% { opacity: 1; box-shadow: 0 0 15px rgba(255,255,255,1); } 
+            100% { opacity: 0.5; box-shadow: 0 0 5px rgba(255,255,255,0.8); } 
+        }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 10px; }
+
+        .header-credits {
+            text-align: center; margin-bottom: 16px; padding: 12px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,240,255,0.9));
+            border-radius: 20px; border: 3px solid #FF1493;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .school-name { 
+            font-size: 1.2rem; font-weight: 900; color: #4A148C; margin-bottom: 5px; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+        }
+        .dev-name { font-size: 1rem; font-weight: 700; color: #C2185B; margin: 0; }
+
+        .game-header {
+            background: rgba(255,255,255,0.95); border-radius: 24px; padding: 15px;
+            margin-bottom: 15px; box-shadow: 0 8px 24px var(--shadow-color);
+            border: 3px solid #FFD700; text-align: center;
+        }
+        h1 { 
+            font-size: 1.8rem; margin: 0 0 5px 0; color: #FF1493; 
+            text-shadow: 2px 2px 4px rgba(255,20,147,0.3); animation: pulse 3s infinite; 
+        }
+        .tagline { color: #FF4500; font-weight: 500; font-size: 0.9rem; }
+
+        .top-section { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;}
+        
+        @media (min-width: 768px) {
+            .top-section {
+                display: grid; grid-template-columns: 2fr 1.4fr; gap: 16px; align-items: stretch;
+            }
+            h1 { font-size: 2.4rem; }
+            .school-name { font-size: 1.6rem; }
+        }
+
+        .status-dashboard { 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; 
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.95); border-radius: 12px; padding: 8px; text-align: center;
+            box-shadow: 0 4px 8px var(--shadow-color); border: 2px solid #FFD700;
+        }
+        .stat-value { font-size: 1.2rem; font-weight: 700; color: #FF1493; font-family: var(--font-numbers); }
+        .stat-label { font-size: 0.8rem; color: #444; }
+        
+        .level-progress {
+            background: rgba(255,255,255,0.95); border-radius: 12px; padding: 10px;
+            box-shadow: 0 4px 8px var(--shadow-color); border: 2px solid #00FF00; margin-bottom: 10px;
+        }
+        .district-name { font-weight: 700; color: #FF1493; text-align: center; margin-bottom: 5px; font-size: 0.95rem;}
+        .progress-bar-container { width: 100%; height: 20px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
+        .progress-bar {
+            height: 100%; background: linear-gradient(90deg, #00FF00, #32CD32); transition: width 0.5s ease;
+            display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.85rem; font-family: var(--font-numbers);
+        }
+
+        .building-showcase {
+            background: rgba(255,255,255,0.95); border-radius: 16px; padding: 10px; text-align: center;
+            box-shadow: 0 4px 12px var(--shadow-color); border: 2px solid #9370DB;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .current-building { font-size: 3.5rem; animation: bounce 2s infinite; margin-bottom: -5px;}
+        .building-name { font-size: 1.1rem; font-weight: 600; color: #9370DB; }
+
+        .hint-panel {
+            background: rgba(0,0,0,0.7); color: #fff; border-radius: 12px; padding: 8px 12px;
+            margin: 0 0 15px 0; display: flex; align-items: center; gap: 10px; 
+            font-size: 0.85rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.98); border-radius: 20px; padding: 15px;
+            margin-bottom: 16px; box-shadow: 0 6px 18px var(--shadow-color); border: 2px solid #00FF00;
+        }
+        
+        .steps-title { 
+            font-weight: 700; margin-bottom: 12px; color: #00BFFF; font-size: 1.1rem;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+        }
+        
+        .hint-btn {
+            display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(135deg, #607d8b, #455a64);
+            color: #fff; padding: 5px 12px; border-radius: 50px; border: none; cursor: pointer;
+            font-family: var(--font-primary); font-size: 0.85rem; box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+        }
+        .hint-badge {
+            background: #FFD700; color: #000; border-radius: 8px; padding: 1px 6px;
+            font-size: 0.75rem; font-weight: bold; font-family: var(--font-numbers);
+        }
+
+        input[type="text"] {
+            padding: 8px; margin: 4px; font-size: 1rem; text-align: center; border-radius: 10px;
+            border: 2px solid #FFD700; background: linear-gradient(135deg, #FFFACD, #FFF8DC);
+            color: #212121; transition: all 0.3s; font-family: var(--font-numbers); font-weight: 600;
+            width: 90px; 
+            direction: ltr;
+        }
+        input[type="text"]:focus { border-color: #FF1493; outline: none; transform: scale(1.02); }
+        .input-hinted { animation: highlightHint 1.5s ease; border-color: #9C27B0 !important; color: #9C27B0 !important; }
+        
+        button.action-btn {
+            border: none; background: linear-gradient(135deg, #FF4500, #FF6347); color: #FFFFFF; padding: 10px 16px;
+            border-radius: 50px; font-size: 1rem; cursor: pointer; margin: 8px 0; width: 100%;
+            box-shadow: 0 4px 12px rgba(255,69,0,0.4); transition: all 0.3s; font-family: var(--font-primary); font-weight: 600;
+        }
+        button.action-btn:active { transform: scale(0.98); }
+        button:disabled { background: #bdbdbd; cursor: default; box-shadow: none; transform: none; opacity: 0.7; }
+
+        @media (min-width: 480px) {
+            button.action-btn { width: auto; min-width: 150px; margin: 8px 4px; }
+            input[type="text"] { width: 110px; font-size: 1.1rem; padding: 10px; }
+        }
+
+        .msg { 
+            margin-top: 10px; font-size: 0.95rem; font-weight: 700; padding: 10px; 
+            border-radius: 10px; text-align: center; min-height: 20px; display: none;
+        }
+        .msg.ok { display: block; color: #fff; background: linear-gradient(135deg, #32CD32, #00FF00); animation: bounce 0.6s; }
+        .msg.err { display: block; color: #fff; background: linear-gradient(135deg, #FF0000, #FF6347); animation: shake 0.5s; }
+        
+        .vertical-wrapper { 
+            display: inline-block; background: linear-gradient(145deg, #ffffff, #f0f0f0); 
+            border-radius: 16px; padding: 12px 20px; direction: ltr; 
+            font-family: var(--font-numbers); margin-top: 5px; border: 1px solid #ddd;
+            font-weight: 700; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .v-row { display: flex; justify-content: center; align-items: center; margin: 2px 0; }
+        
+        /* استایل اختصاصی برای ردیف‌های تکنیکی جهت تراز دقیق */
+        .v-row-trick {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 10px;
+            margin: 2px 0;
+            width: 100%;
+        }
+        .v-row-trick > input { grid-column: 2; }
+        .v-row-trick > span.trick-hint {
+            grid-column: 3;
+            text-align: left;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            width: 150px;
+        }
+
+        .v-op { width: 2ch; text-align: center; font-size: 1.4rem; color: #f44336; }
+        .v-num { min-width: 4ch; text-align: center; font-size: 1.6rem; letter-spacing: 2px; color: #212121;}
+        .v-line { border-top: 2px solid #424242; margin: 5px 0; }
+        .center-wrapper { text-align: center; margin: 10px 0; }
+
+        .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 10px; }
+        table.area-table { 
+            border-collapse: collapse; width: 100%; min-width: 300px; max-width: 480px; 
+            margin: 5px auto; direction: ltr; table-layout: fixed;
+        }
+        .area-table th, .area-table td { 
+            border: 2px solid #9370DB; text-align: center; padding: 5px; 
+            font-size: 0.95rem; font-weight: 600; font-family: var(--font-numbers);
+        }
+        .area-table input { width: 90% !important; min-width: 0; margin: 2px auto; padding: 5px; font-size: 0.9rem; }
+        .area-table th.header-top { background: linear-gradient(135deg, #00BFFF, #1E90FF); color: #fff; }
+        .area-table th.header-side { background: linear-gradient(135deg, #32CD32, #00FF00); color: #fff; width: 20%; }
+        
+        .area-graphic { 
+            width: 100%; max-width: 480px; border: 4px solid #8A2BE2; display: grid; background: #fafafa;
+            border-radius: 16px; margin: 10px auto; overflow: hidden; direction: ltr;
+            box-shadow: 0 6px 15px rgba(138,43,226,0.4);
+            min-height: 220px; transition: all 0.3s ease;
+        }
+        .rect-cell { 
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+            color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); padding: 4px; text-align: center; 
+            border: 1px solid rgba(255,255,255,0.4); font-weight: 700; font-family: var(--font-numbers);
+            opacity: 0; transform: scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; word-break: break-all;
+        }
+        .rect-cell.visible { opacity: 1; transform: scale(1); }
+        .rect-cell.blinking { 
+            animation: blinkRect 0.8s infinite alternate; opacity: 0.9 !important; 
+            transform: scale(1) !important; background-color: #f5f5f5; color: #333; 
+            border: 2px dashed #FF1493;
+        }
+        
+        .rect-tt { background: linear-gradient(135deg, #2196F3, #00BFFF); }
+        .rect-to { background: linear-gradient(135deg, #FFC107, #FF9800); }
+        .rect-ot { background: linear-gradient(135deg, #4CAF50, #8BC34A); }
+        .rect-oo { background: linear-gradient(135deg, #E91E63, #F44336); }
+
+        .mode-switch { display: flex; gap: 8px; margin: 15px 0; overflow-x: auto; padding-bottom: 5px; justify-content: center; }
+        .mode-btn { 
+            flex: 1; white-space: nowrap; padding: 10px 12px; border-radius: 25px; min-width: 100px;
+            background: #fff; color: #555; cursor: pointer; transition: all 0.3s ease;
+            border: 2px solid #e0e0e0; font-weight: 600; font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: inline-flex; justify-content: center; align-items: center; gap: 5px;
+        }
+        .mode-btn.active { 
+            background: linear-gradient(135deg, #FF1493, #9370DB); color: #fff;
+            border-color: transparent; transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 20, 147, 0.3);
+        }
+
+        .method-content { display: none; }
+        .method-content.active { display: block; animation: fadeIn 0.5s; }
+
+        .flex-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 8px 0; }
+        
+        .decomp-row { 
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; 
+            gap: 5px; margin: 10px 0; background: #f9f9f9; padding: 10px; border-radius: 12px;
+        }
+        .decomp-row span { font-family: var(--font-numbers); font-weight: 700; font-size: 1.2rem; }
+        .decomp-row input { width: 70px; margin: 0 2px; }
+
+        .formula-container { 
+            font-size: 1rem; text-align: center; margin: 10px 0; 
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 10px; 
+            border-radius: 12px; font-family: var(--font-numbers); direction: ltr;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; align-items: center;
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 8px; }
+            .decomp-row { justify-content: center; }
+            .decomp-row input { font-size: 0.95rem; padding: 6px; }
+            .formula-container input { width: 60px; padding: 5px; font-size: 0.9rem; }
+            .rect-cell { font-size: 0.9rem; }
+            .vertical-wrapper input { width: 100px !important; font-size: 1.1rem; }
+            .v-row-trick > span.trick-hint { width: auto; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body class="level-1">
+
+<div class="container">
+    <div class="header-credits">
+        <div class="school-name">دبستان پسرانه شاهد مهندس قدملی شبستر</div>
+        <div class="dev-name"><span>سازنده بازی:</span> علی اکبر بابائی</div>
+    </div>
+
+    <div class="game-header">
+        <h1>🏙️ شهر ریاضی - محله ضرب ها 🏙️</h1>
+        <div class="tagline">تو معمار جوانی هستی که می‌خواهی بزرگ‌ترین شهر ریاضی دنیا را بسازی! 🚀</div>
+    </div>
+
+    <div class="top-section">
+        <div class="top-left-block">
+            <div class="status-dashboard">
+                <div class="stat-card"> <div class="stat-value" id="building-number">۰</div> <div class="stat-label">ساختمان</div> </div>
+                <div class="stat-card"> <div class="stat-value" id="coins">۱۰</div> <div class="stat-label">سکه طلا</div> </div>
+                <div class="stat-card"> <div class="stat-value" id="stars">۰</div> <div class="stat-label">ستاره</div> </div>
+            </div>
+            <div class="level-progress">
+                <div class="district-name"> <span id="district-emoji">🏘️</span> <span id="district-name">محله مبتدی‌ها</span> </div>
+                <div class="progress-bar-container"> <div class="progress-bar" id="progress-bar" style="width: 0%;"><span id="progress-text">۰/۵</span></div> </div>
+            </div>
+        </div>
+        <div class="top-right-block">
+            <div class="building-showcase">
+                <div class="current-building" id="current-building">🏠</div>
+                <div class="building-name" id="building-name">خانه کوچک</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hint-panel">
+        <div style="font-size: 1.4rem;">💡</div>
+        <div id="hint-text" style="flex:1;">اگر نیاز به کمک داری ، از دکمه «راهنما» استفاده کن. (۱۰ سکه)</div>
+    </div>
+
+    <div class="mode-switch">
+        <button type="button" class="mode-btn active" data-mode="area">📐 مساحتی</button>
+        <button type="button" class="mode-btn" data-mode="process">📝 فرآیندی</button>
+        <button type="button" class="mode-btn" data-mode="trick">⚡ تکنیکی</button>
+    </div>
+
+    <!-- Area Method -->
+    <div id="method-area" class="method-content active">
+        <div class="card">
+            <div class="steps-title"> <span class="title-text">🎯 ماموریت ساخت (مدل مساحتی)</span> </div>
+            <div class="center-wrapper">
+                <div class="vertical-wrapper">
+                    <div class="v-row"><span class="v-op"></span><span class="v-num" id="v-a-top"></span></div>
+                    <div class="v-row"><span class="v-op">×</span><span class="v-num" id="v-b-top"></span></div>
+                    <div class="v-line"></div>
+                </div>
+            </div>
+            <div class="flex-row"> <button class="action-btn" id="new-problem-btn" style="background: linear-gradient(135deg, #00BFFF, #1E90FF);">🎲 سؤال جدید</button> </div>
+            
+            <details style="margin-top:10px; border-top:1px solid #eee; padding-top:10px;">
+                <summary style="cursor:pointer; color:#555; font-size:0.9rem; margin-bottom:5px;">تنظیم دستی اعداد</summary>
+                <div class="flex-row">
+                    <input type="text" inputmode="numeric" id="custom-a" placeholder="عدد اول">
+                    <input type="text" inputmode="numeric" id="custom-b" placeholder="عدد دوم">
+                    <button class="action-btn" id="apply-custom-btn" style="padding:8px 15px; font-size:0.9rem; width:auto;">تایید</button>
+                </div>
+            </details>
+        </div>
+        
+        <div class="card">
+            <div class="steps-title"> <span class="title-text">🔨 مرحله ۱: گسترده کردن اعداد</span> </div>
+            <div class="decomp-row"> <span id="a-value"></span> <span>=</span> <input type="text" inputmode="numeric" id="a-tens" placeholder="دهگان"> <span>+</span> <input type="text" inputmode="numeric" id="a-ones" placeholder="یکان"> </div>
+            <div class="decomp-row"> <span id="b-value"></span> <span>=</span> <input type="text" inputmode="numeric" id="b-tens" placeholder="دهگان"> <span>+</span> <input type="text" inputmode="numeric" id="b-ones" placeholder="یکان"> </div>
+            <button class="action-btn" id="check-step1">✅ بررسی مرحله ۱</button>
+            <div class="msg" id="msg-step1"></div>
+        </div>
+        
+        <div class="card">
+            <div class="steps-title">
+                <span class="title-text">🏗️ مرحله ۲: مدل مساحتی</span>
+                <button type="button" class="hint-btn" id="hint-area-btn"> 💡 راهنما <span class="hint-badge">۱۰</span> </button>
+            </div>
+            <div class="table-container">
+                <table class="area-table">
+                    <thead><tr><th></th><th class="header-top" id="col-tens"></th><th class="header-top" id="col-ones"></th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <th class="header-side" id="row-tens"></th>
+                            <td><span style="font-size:0.75rem; display:block; color:#555;" id="label-tt"></span><input type="text" inputmode="numeric" id="cell-tt" placeholder="؟"></td>
+                            <td><span style="font-size:0.75rem; display:block; color:#555;" id="label-to"></span><input type="text" inputmode="numeric" id="cell-to" placeholder="؟"></td>
+                        </tr>
+                        <tr>
+                            <th class="header-side" id="row-ones"></th>
+                            <td><span style="font-size:0.75rem; display:block; color:#555;" id="label-ot"></span><input type="text" inputmode="numeric" id="cell-ot" placeholder="؟"></td>
+                            <td><span style="font-size:0.75rem; display:block; color:#555;" id="label-oo"></span><input type="text" inputmode="numeric" id="cell-oo" placeholder="؟"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="area-graphic" class="area-graphic">
+                <div class="rect-cell rect-tt" id="rect-tt"></div><div class="rect-cell rect-to" id="rect-to"></div>
+                <div class="rect-cell rect-ot" id="rect-ot"></div><div class="rect-cell rect-oo" id="rect-oo"></div>
+            </div>
+            <button class="action-btn" id="check-step2" disabled>✅ بررسی نقشه</button>
+            <div class="msg" id="msg-step2"></div>
+        </div>
+        
+        <div class="card">
+            <div class="steps-title"> <span class="title-text">🎉 مرحله ۳: تکمیل ساختمان</span> </div>
+            <div class="flex-row"> <input type="text" inputmode="numeric" id="sum-partials" placeholder="جمع مساحت ها" style="width:140px;"> <span> = </span> <input type="text" inputmode="numeric" id="final-product" placeholder="جواب ضرب" style="width:140px;"> </div>
+            <button class="action-btn" id="check-step3" disabled>🏆 ساخت نهایی!</button>
+            <div class="msg" id="msg-step3"></div>
+        </div>
+    </div>
+
+    <!-- Process Method -->
+    <div id="method-process" class="method-content">
+        <div class="card">
+            <div class="steps-title">
+                <span class="title-text">📝 ماموریت فرآیندی</span>
+                <button type="button" class="hint-btn" id="hint-process-btn"> 💡 راهنما <span class="hint-badge">۱۰</span> </button>
+            </div>
+            <div class="center-wrapper">
+                <div class="vertical-wrapper">
+                    <div class="v-row"><span class="v-op"></span><span class="v-num" id="process-v-a-top"></span></div>
+                    <div class="v-row"><span class="v-op">×</span><span class="v-num" id="process-v-b-top"></span></div>
+                    <div class="v-line"></div>
+                </div>
+            </div>
+            <div style="margin-top:15px;">
+                <div id="process-formula-question" class="formula-container" style="background:transparent; padding:0;"></div>
+                <div class="formula-container">
+                    <input type="text" inputmode="numeric" id="proc-tt" placeholder="اول"> + <input type="text" inputmode="numeric" id="proc-to" placeholder="دوم"> +
+                    <input type="text" inputmode="numeric" id="proc-ot" placeholder="سوم"> + <input type="text" inputmode="numeric" id="proc-oo" placeholder="چهارم">
+                </div>
+                <div class="formula-container" style="background:#fff; border:2px solid #eee;">
+                    <span> = </span>
+                    <input type="text" inputmode="numeric" id="proc-total" placeholder="جمع نهایی" style="background:#fff; border-color:#32CD32;">
+                </div>
+            </div>
+            <button class="action-btn" id="check-process">🏆 بررسی و ثبت</button>
+            <div class="msg" id="msg-process"></div>
+        </div>
+    </div>
+
+    <!-- Trick Method -->
+    <div id="method-trick" class="method-content">
+        <div class="card">
+            <div class="steps-title">
+                <span class="title-text">⚡ ماموریت تکنیکی</span>
+                <button type="button" class="hint-btn" id="hint-trick-btn"> 💡 راهنما <span class="hint-badge">۱۰</span> </button>
+            </div>
+            <div class="center-wrapper">
+                <div class="vertical-wrapper">
+                    <div class="v-row"><span class="v-op"></span><span class="v-num" id="trick-v-a-top"></span></div>
+                    <div class="v-row"><span class="v-op">×</span><span class="v-num" id="trick-v-b-top"></span></div>
+                    <div class="v-line"></div>
+                    
+                    <div class="v-row-trick"> 
+                        <div></div>
+                        <input type="text" inputmode="numeric" id="trick-p1-input"> 
+                        <span class="trick-hint" style="color:#FF4500;" id="trick-hint-1"></span> 
+                    </div>
+                    
+                    <div class="v-row-trick"> 
+                         <div> <span> + </span> </div>
+                        <input type="text" inputmode="numeric" id="trick-p2-input"> 
+                        <span class="trick-hint" style="color:#00BFFF;" id="trick-hint-2"></span> 
+                    </div>
+                    
+                    <div class="v-line"></div>
+                    
+                    <div class="v-row-trick"> 
+                        <div></div>
+                        <input type="text" inputmode="numeric" id="trick-total-input" style="border-color:#32CD32;"> 
+                        <span class="trick-hint" style="color:#32CD32;">(جمع نهایی)</span> 
+                    </div>
+                </div>
+            </div>
+            <button class="action-btn" id="check-trick">🏆 بررسی و ثبت</button>
+            <div class="msg" id="msg-trick"></div>
+        </div>
+    </div>
+
+    <div style="text-align:center; color:#333; font-size:1.5rem; margin-top:20px; padding:10px; opacity:0.7;"> ✨🙏 تشکر ویژه از رهنمود های آقای طهماسب پور و همکاران 🙏✨ </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Utility Functions
+    function toPersianNum(num) { 
+        if (num === null || num === undefined) return ''; 
+        return num.toString().replace(/d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); 
+    }
+    function toEnglishNum(numStr) { 
+        if (!numStr) return ''; 
+        return numStr.toString().replace(/[۰-۹]/g, d => '0123456789'['۰۱۲۳۴۵۶۷۸۹'.indexOf(d)]).trim(); 
+    }
+
+    // تبدیل خودکار ورودی‌های کاربر به فارسی هنگام تایپ
+    document.querySelectorAll('input[type="text"]').forEach(input => {
+        input.addEventListener('input', function(e) {
+            let val = e.target.value;
+            let persianVal = toPersianNum(toEnglishNum(val));
+            if(val !== persianVal) {
+                e.target.value = persianVal;
+            }
+        });
+    });
+
+    // Variables
+    var a, b, aTens, aOnes, bTens, bOnes, correctTT, correctTO, correctOT, correctOO;
+    var coins = 10;
+    var buildingNumber = 1;
+    
+    // Data
+    var buildings = [ {icon: '🏠', name: 'خانه کوچک'}, {icon: '🏡', name: 'خانه حیاط‌دار'}, {icon: '🏢', name: 'برج شیشه‌ای'}, {icon: '🏬', name: 'مرکز خرید'}, {icon: '🏫', name: 'مدرسه ریاضی'}, {icon: '🏰', name: 'قلعه عددها'}, {icon: '🏨', name: 'هتل ستاره‌دار'}, {icon: '🏛️', name: 'کاخ اعداد'}, {icon: '🏗️', name: 'برج آسمان'} ];
+    var districts = [ {emoji: '🏘️', name: 'محله مبتدی‌ها'}, {emoji: '🏙️', name: 'خیابان ماهرها'}, {emoji: '🌆', name: 'بلوار استادها'}, {emoji: '🌉', name: 'پل طلایی'}, {emoji: '🏛️', name: 'قصر نهایی'} ];
+
+    function getSolvedBuildings() { return Math.max(0, buildingNumber - 1); }
+
+    function updateDashboard() {
+        var solved = getSolvedBuildings();
+        var stars = Math.floor(solved / 5);
+        document.getElementById('building-number').textContent = toPersianNum(solved);
+        document.getElementById('coins').textContent = toPersianNum(coins);
+        document.getElementById('stars').textContent = toPersianNum(stars);
+        
+        var levelIndex = Math.min(Math.floor(solved / 5), districts.length - 1);
+        var district = districts[levelIndex];
+        
+        document.getElementById('district-emoji').textContent = district.emoji;
+        document.getElementById('district-name').textContent = district.name;
+        
+        var inLevelSolved = solved % 5;
+        document.getElementById('progress-bar').style.width = `${(inLevelSolved / 5) * 100}%`;
+        document.getElementById('progress-text').textContent = `${toPersianNum(inLevelSolved)}/۵`;
+        
+        document.body.className = `level-${Math.min(levelIndex + 1, 5)}`;
+        
+        var bIndex = solved % buildings.length;
+        document.getElementById('current-building').textContent = buildings[bIndex].icon;
+        document.getElementById('building-name').textContent = buildings[bIndex].name;
+    }
+
+    function updateProblemUI() {
+        aTens = Math.floor(a / 10) * 10; aOnes = a % 10;
+        bTens = Math.floor(b / 10) * 10; bOnes = b % 10;
+        correctTT = aTens * bTens; correctTO = aTens * bOnes; correctOT = aOnes * bTens; correctOO = aOnes * bOnes;
+
+        const setTexts = (ids, val) => ids.forEach(id => { if(document.getElementById(id)) document.getElementById(id).textContent = toPersianNum(val); });
+        setTexts(['v-a-top', 'process-v-a-top', 'trick-v-a-top', 'a-value'], a);
+        setTexts(['v-b-top', 'process-v-b-top', 'trick-v-b-top', 'b-value'], b);
+
+        document.querySelectorAll('input[type="text"]').forEach(inp => { inp.value = ''; inp.classList.remove('input-hinted'); });
+        document.getElementById('check-step2').disabled = true;
+        document.getElementById('check-step3').disabled = true;
+
+        ['rect-tt','rect-to','rect-ot','rect-oo'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.textContent = ''; el.classList.remove('visible', 'blinking'); }
+        });
+        
+        ['col-tens', 'col-ones', 'row-tens', 'row-ones', 'label-tt', 'label-to', 'label-ot', 'label-oo'].forEach(id => {
+            if(document.getElementById(id)) document.getElementById(id).textContent = '';
+        });
+
+        document.getElementById('process-formula-question').innerHTML = `( ${toPersianNum(aTens)} + ${toPersianNum(aOnes)} ) × ( ${toPersianNum(bTens)} + ${toPersianNum(bOnes)} )`;
+        
+        document.getElementById('trick-hint-1').textContent = `(${toPersianNum(bOnes)} × ${toPersianNum(a)})`;
+        document.getElementById('trick-hint-2').textContent = `(${toPersianNum(bTens)} × ${toPersianNum(a)})`;
+        
+        // Graphic logic
+        var totalH = aTens + aOnes; var totalW = bTens + bOnes;
+        var rowT_raw = totalH > 0 ? (aTens / totalH) * 100 : 50;
+        var colT_raw = totalW > 0 ? (bTens / totalW) * 100 : 50;
+
+        var rowT = Math.max(30, Math.min(70, rowT_raw));
+        var colT = Math.max(30, Math.min(70, colT_raw));
+
+        var ag = document.getElementById('area-graphic');
+        ag.style.gridTemplateRows = `${rowT}% auto`;
+        ag.style.gridTemplateColumns = `${colT}% auto`;
+
+        document.querySelectorAll('.msg').forEach(el => { el.textContent = ''; el.className = 'msg'; el.style.display = 'none'; });
+    }
+
+    function generateRandomProblem() {
+        var levelIndex = Math.floor(getSolvedBuildings() / 5);
+        var min = (levelIndex === 0) ? 10 : (levelIndex === 1) ? 20 : 15;
+        var max = (levelIndex === 0) ? 30 : (levelIndex === 1) ? 50 : 99;
+        a = Math.floor(Math.random() * (max - min + 1)) + min;
+        b = Math.floor(Math.random() * (max - min + 1)) + min;
+        updateProblemUI();
+    }
+
+    function useHint(inputsToFill) {
+        if (coins < 10) { alert('سکه کافی نیست! برای گرفتن راهنما به ۱۰ سکه نیاز داری.'); return; }
+        coins -= 10;
+        updateDashboard();
+        inputsToFill.forEach(item => {
+            var el = document.getElementById(item.id);
+            if (el) {
+                el.value = toPersianNum(item.val);
+                el.classList.add('input-hinted');
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        });
+    }
+
+    // Event Listeners
+    document.getElementById('hint-area-btn').addEventListener('click', function() {
+        useHint([
+            {id: 'a-tens', val: aTens}, {id: 'a-ones', val: aOnes},
+            {id: 'b-tens', val: bTens}, {id: 'b-ones', val: bOnes},
+            {id: 'cell-tt', val: correctTT}, {id: 'cell-to', val: correctTO},
+            {id: 'cell-ot', val: correctOT}, {id: 'cell-oo', val: correctOO},
+            {id: 'sum-partials', val: (correctTT + correctTO + correctOT + correctOO)},
+            {id: 'final-product', val: a * b}
+        ]);
+        document.getElementById('check-step1').click();
+        document.getElementById('check-step2').disabled = false;
+        document.getElementById('check-step3').disabled = false;
+    });
+
+    document.getElementById('hint-process-btn').addEventListener('click', () => useHint([{id: 'proc-tt', val: correctTT}, {id: 'proc-to', val: correctTO}, {id: 'proc-ot', val: correctOT}, {id: 'proc-oo', val: correctOO}, {id: 'proc-total', val: a * b}]));
+    document.getElementById('hint-trick-btn').addEventListener('click', () => useHint([{id: 'trick-p1-input', val: a * bOnes}, {id: 'trick-p2-input', val: a * bTens}, {id: 'trick-total-input', val: a * b}]));
+
+    function showMsg(id, success, text) {
+        var el = document.getElementById(id);
+        el.textContent = text;
+        el.className = success ? 'msg ok' : 'msg err';
+        el.style.display = 'block';
+    }
+
+    function handleSuccess(msgId, msgText) {
+        showMsg(msgId, true, msgText);
+        coins += 5;
+        buildingNumber++;
+        updateDashboard();
+        document.getElementById(msgId).scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        setTimeout(generateRandomProblem, 3000);
+    }
+
+    document.getElementById('check-step1').addEventListener('click', function() {
+        var at = parseInt(toEnglishNum(document.getElementById('a-tens').value)) || 0; var ao = parseInt(toEnglishNum(document.getElementById('a-ones').value)) || 0;
+        var bt = parseInt(toEnglishNum(document.getElementById('b-tens').value)) || 0; var bo = parseInt(toEnglishNum(document.getElementById('b-ones').value)) || 0;
+        if (at === aTens && ao === aOnes && bt === bTens && bo === bOnes) {
+            showMsg('msg-step1', true, 'آفرین! گسترده کردن اعداد درست است.');
+            document.getElementById('col-tens').textContent = toPersianNum(bTens); document.getElementById('col-ones').textContent = toPersianNum(bOnes);
+            document.getElementById('row-tens').textContent = toPersianNum(aTens); document.getElementById('row-ones').textContent = toPersianNum(aOnes);
+            document.getElementById('label-tt').textContent = `${toPersianNum(aTens)}×${toPersianNum(bTens)}`; document.getElementById('label-to').textContent = `${toPersianNum(aTens)}×${toPersianNum(bOnes)}`;
+            document.getElementById('label-ot').textContent = `${toPersianNum(aOnes)}×${toPersianNum(bTens)}`; document.getElementById('label-oo').textContent = `${toPersianNum(aOnes)}×${toPersianNum(bOnes)}`;
+            document.getElementById('check-step2').disabled = false;
+        } else { showMsg('msg-step1', false, 'دقت کن! دهگان و یکان را بررسی کن.'); }
+    });
+
+    document.getElementById('check-step2').addEventListener('click', function() {
+        var tt = parseInt(toEnglishNum(document.getElementById('cell-tt').value)) || 0; var to = parseInt(toEnglishNum(document.getElementById('cell-to').value)) || 0;
+        var ot = parseInt(toEnglishNum(document.getElementById('cell-ot').value)) || 0; var oo = parseInt(toEnglishNum(document.getElementById('cell-oo').value)) || 0;
+        if (tt === correctTT && to === correctTO && ot === correctOT && oo === correctOO) {
+            showMsg('msg-step2', true, 'فوق‌العاده! همه مساحت‌ها صحیح هستند.');
+            document.getElementById('check-step3').disabled = false;
+        } else { showMsg('msg-step2', false, 'اشتباه داری. ضرب سطر در ستون را چک کن.'); }
+    });
+
+    document.getElementById('check-step3').addEventListener('click', () => {
+        var sum = parseInt(toEnglishNum(document.getElementById('sum-partials').value)) || 0; var finalP = parseInt(toEnglishNum(document.getElementById('final-product').value)) || 0;
+        if (sum === (correctTT + correctTO + correctOT + correctOO) && finalP === (a * b)) { handleSuccess('msg-step3', 'تبریک! ساختمان ساخته شد! 🏠 (+۵ سکه)'); } 
+        else { showMsg('msg-step3', false, 'جمع نهایی یا حاصل‌ضرب اشتباه است.'); }
+    });
+
+    document.getElementById('check-process').addEventListener('click', () => {
+        var parts = [
+            parseInt(toEnglishNum(document.getElementById('proc-tt').value))||0, 
+            parseInt(toEnglishNum(document.getElementById('proc-to').value))||0, 
+            parseInt(toEnglishNum(document.getElementById('proc-ot').value))||0, 
+            parseInt(toEnglishNum(document.getElementById('proc-oo').value))||0
+        ];
+        var total = parseInt(toEnglishNum(document.getElementById('proc-total').value)) || 0;
+        var corrects = [correctTT, correctTO, correctOT, correctOO];
+        parts.sort((x,y)=>x-y);
+        corrects.sort((x,y)=>x-y);
+        if (JSON.stringify(parts) === JSON.stringify(corrects) && total === (a*b)) { 
+            handleSuccess('msg-process', 'عالی! ضرب فرآیندی کامل شد. 🏗️ (+۵ سکه)'); 
+        } else { 
+            showMsg('msg-process', false, 'اعداد داخل کادرها یا جمع نهایی را بررسی کن.'); 
+        }
+    });
+
+    document.getElementById('check-trick').addEventListener('click', () => {
+        var r1 = parseInt(toEnglishNum(document.getElementById('trick-p1-input').value)) || 0; 
+        var r2 = parseInt(toEnglishNum(document.getElementById('trick-p2-input').value)) || 0; 
+        var t = parseInt(toEnglishNum(document.getElementById('trick-total-input').value)) || 0;
+        if (r1 === (a * bOnes) && r2 === (a * bTens) && t === (a * b)) { 
+            handleSuccess('msg-trick', 'سریع و دقیق! ⚡ (+۵ سکه)'); 
+        } else { 
+            showMsg('msg-trick', false, 'دقت کن! ضرب طبقه اول یا دوم اشتباه است.'); 
+        }
+    });
+
+    function setupAreaInputListeners() {
+        const checkAndUpdateRect = (inputId, rectId, getCorrectValue) => {
+            const inputEl = document.getElementById(inputId);
+            const rectEl = document.getElementById(rectId);
+            inputEl.addEventListener('focus', () => { rectEl.classList.add('blinking'); });
+            inputEl.addEventListener('blur', () => { rectEl.classList.remove('blinking'); });
+            inputEl.addEventListener('input', (e) => {
+                const userValue = parseInt(toEnglishNum(e.target.value)) || 0;
+                if (userValue === getCorrectValue()) {
+                    rectEl.textContent = toPersianNum(userValue);
+                    rectEl.classList.add('visible');
+                    rectEl.classList.remove('blinking');
+                } else {
+                    rectEl.classList.remove('visible');
+                }
+            });
+        };
+        checkAndUpdateRect('cell-tt', 'rect-tt', () => correctTT); checkAndUpdateRect('cell-to', 'rect-to', () => correctTO);
+        checkAndUpdateRect('cell-ot', 'rect-ot', () => correctOT); checkAndUpdateRect('cell-oo', 'rect-oo', () => correctOO);
+    }
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.method-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('method-' + btn.dataset.mode).classList.add('active');
+        });
+    });
+
+    document.getElementById('new-problem-btn').addEventListener('click', generateRandomProblem);
+    
+    document.getElementById('apply-custom-btn').addEventListener('click', () => {
+        var va = parseInt(toEnglishNum(document.getElementById('custom-a').value)); 
+        var vb = parseInt(toEnglishNum(document.getElementById('custom-b').value));
+        if(!isNaN(va) && !isNaN(vb) && va > 9 && vb > 9) {
+            a = va; b = vb;
+            updateProblemUI();
+            document.querySelector('details').removeAttribute('open');
+        } else {
+            alert('لطفا اعداد دو رقمی وارد کنید');
+        }
+    });
+
+    // فراخوانی تابع لیسنرها
+    setupAreaInputListeners();
+
+    generateRandomProblem();
+});
+</script>
+</body>
+</html>
