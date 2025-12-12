@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>شهر ریاضی - محله ضرب‌ها</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- فونت وزیرمتن -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        :root {
+            --font-primary: 'Vazirmatn', sans-serif;
+            --font-numbers: 'Vazirmatn', sans-serif;
+            --bg-grad: linear-gradient(135deg, #90EE90, #98FB98);
+            --cell-size: 46px;
+        }
+
+        * { box-sizing: border-box; font-feature-settings: "ss01"; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            direction: rtl; text-align: right; font-family: var(--font-primary);
+            margin: 0; padding: 0; background: var(--bg-grad); color: #212121;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 10px; }
+
+        /* --- هدر --- */
+        .header-credits {
+            text-align: center; margin-bottom: 12px; padding: 10px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,240,255,0.9));
+            border-radius: 20px; border: 3px solid #FF1493;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        .school-name { font-size: 1.1rem; font-weight: 900; color: #4A148C; margin-bottom: 5px; text-shadow: 1px 1px 1px rgba(0,0,0,0.1); }
+        .dev-name { font-size: 0.95rem; font-weight: 700; color: #C2185B; }
+
+        .game-title {
+            background: rgba(255,255,255,0.95); border-radius: 20px; padding: 12px;
+            margin-bottom: 15px; border: 3px solid #FFD700; text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        h1 { margin: 0; color: #FF1493; font-size: 1.6rem; animation: pulse 3s infinite; text-shadow: 2px 2px 0 rgba(255,20,147,0.1); }
+        .tagline { color: #FF6F00; font-size: 0.85rem; margin-top: 5px; font-weight: bold; }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        /* --- داشبورد --- */
+        .dashboard { display: grid; grid-template-columns: 2fr 1.5fr; gap: 10px; margin-bottom: 15px; }
+        .stats-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+        .stat-box { background: #fff; border-radius: 10px; padding: 5px; text-align: center; border: 2px solid #FFD700; box-shadow: 0 3px 5px rgba(0,0,0,0.1); }
+        .stat-val { font-family: var(--font-numbers); font-weight: 900; font-size: 1.1rem; color: #C2185B; display: block; }
+        .stat-lbl { font-size: 0.75rem; color: #555; }
+
+        .progress-panel { background: #fff; border-radius: 12px; padding: 8px; border: 2px solid #00E676; text-align: center; }
+        .district-name { font-size: 0.9rem; font-weight: 700; color: #2E7D32; margin-bottom: 5px; }
+        .bar-bg { width: 100%; height: 18px; background: #eee; border-radius: 9px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, #00E676, #00C853); width: 0%; transition: width 0.5s; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.75rem; font-family: var(--font-numbers); }
+
+        .building-display {
+            background: rgba(255,255,255,0.8); border-radius: 16px; padding: 10px;
+            text-align: center; margin-bottom: 15px; border: 2px solid #9370DB;
+        }
+        .b-icon { font-size: 3.5rem; display: block; animation: bounce 2s infinite; margin-bottom: -5px; }
+        .b-name { color: #673AB7; font-weight: 700; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        .hint-bar {
+            background: rgba(0,0,0,0.8); color: #fff; border-radius: 12px; padding: 10px 15px;
+            margin-bottom: 15px; display: flex; align-items: center; gap: 10px; 
+            font-size: 0.9rem; border-bottom: 4px solid #FFD700; min-height: 55px;
+        }
+
+        .card {
+            background: #fff; border-radius: 18px; padding: 15px;
+            margin-bottom: 15px; border: 2px solid #4CAF50; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+            font-weight: 700; color: #0288D1; font-size: 1rem;
+        }
+
+        .settings-wrap { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; background: #F1F8E9; padding: 8px; border-radius: 10px; }
+        select, input.cust-inp { 
+            padding: 8px; border-radius: 8px; border: 1px solid #BDBDBD; 
+            font-family: var(--font-numbers); text-align: center; font-size: 1rem;
+        }
+
+        /* --- Game Layout --- */
+        .game-layout {
+            display: flex; justify-content: flex-start; align-items: flex-start; gap: 10px;
+            overflow-x: auto; padding-bottom: 15px; position: relative;
+        }
+
+        .carry-box {
+            display: flex; flex-direction: column; align-items: center; 
+            padding-top: 55px; min-width: 50px;
+            position: sticky; right: 0; z-index: 20;
+            pointer-events: none;
+        }
+        .carry-circle {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+            border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 900; font-family: var(--font-numbers); font-size: 1.4rem;
+            opacity: 0; transform: scale(0.5); transition: all 0.3s;
+            pointer-events: auto;
+        }
+        .carry-circle.show { opacity: 1; transform: scale(1); }
+        .carry-lbl { 
+            font-size: 0.7rem; color: #333; margin-top: 5px; font-weight: bold; 
+            background: rgba(255,255,255,0.8); padding: 2px 6px; border-radius: 10px;
+        }
+
+        .grid-container-wrapper { position: relative; padding-left: 30px; }
+        .grid-box {
+            display: grid; gap: 3px; direction: ltr;
+            background: #fff; padding: 10px; border: 2px solid #E0E0E0; border-radius: 14px;
+        }
+        
+        .plus-sign {
+            position: absolute; left: -25px;
+            color: #F44336; font-weight: 900; font-size: 1.4rem;
+            background: #fff; width: 24px; height: 24px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 5;
+        }
+
+        .cell {
+            width: var(--cell-size); height: var(--cell-size);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-numbers); font-size: 1.3rem; font-weight: 700; color: #333;
+        }
+        input.g-inp {
+            width: 100%; height: 100%; text-align: center; font-size: 1.2rem;
+            font-family: var(--font-numbers); font-weight: 700;
+            border: 2px solid #CFD8DC; border-radius: 6px; background: #FAFAFA;
+            padding: 0; margin: 0; -moz-appearance: textfield;
+        }
+        input.g-inp:focus { border-color: #FF1493; background: #fff; transform: scale(1.1); z-index: 5; outline: none; }
+        input.g-inp.correct { background: #E8F5E9; border-color: #4CAF50; color: #2E7D32; }
+        input.g-inp.error { background: #FFEBEE; border-color: #F44336; animation: shake 0.4s; }
+        input.g-inp.target { border-color: #FFD700 !important; box-shadow: 0 0 10px #FFD700; }
+        
+        /* استایل برای صفرهای ثابت */
+        input.g-inp.static-zero {
+            background-color: #E8F5E9; /* رنگ سبز کمرنگ مشابه حالت صحیح */
+            border-color: #A5D6A7;
+            color: #388E3C;
+            pointer-events: none; /* غیرقابل کلیک */
+            opacity: 0.9;
+        }
+
+        .op { color: #F44336; }
+        .sep { grid-column: 1 / -1; height: 2px; background: #546E7A; margin: 2px 0; }
+        .highlight { background: #FFEB3B; color: #000; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+        .btn {
+            border: none; padding: 10px 15px; border-radius: 50px; cursor: pointer;
+            font-family: var(--font-primary); font-weight: 700; color: #fff; width: 100%;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1); transition: transform 0.1s;
+        }
+        .btn:active { transform: translateY(2px); box-shadow: none; }
+        .btn-new { background: #03A9F4; min-width: 120px; }
+        .btn-solve { background: #FF5722; font-size: 0.85rem; padding: 5px 12px; width: auto; }
+        .btn-check { background: #4CAF50; font-size: 1.1rem; margin-top: 15px; }
+        .btn-cust { background: #607D8B; font-size: 0.9rem; padding: 8px; width: auto;}
+
+        .msg-box { margin-top: 10px; padding: 10px; border-radius: 8px; text-align: center; display: none; font-weight: bold;}
+        .msg-box.ok { background: #4CAF50; color: #fff; animation: bounce 0.6s; }
+        .msg-box.err { background: #F44336; color: #fff; animation: shake 0.4s; }
+
+        .thanks-card {
+            background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+            border-radius: 18px; padding: 12px 16px; border: 2px dashed #FF9800;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; font-size: 0.9rem; color: #5D4037;
+        }
+        .thanks-title { font-weight: 800; margin-bottom: 6px; color: #E65100; }
+        .thanks-text span { font-weight: 700; color: #D84315; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="header-credits">
+        <div class="school-name">دبستان پسرانه شاهد مهندس قدملی شبستر</div>
+        <div class="dev-name"><span>سازنده بازی :</span> علی اکبر بابائی</div>
+    </div>
+
+    <div class="game-title">
+        <h1>🏙️ شهر ریاضی - محله ضرب‌ها 🏙️</h1>
+        <div class="tagline">تو معمار جوانی هستی که می‌خواهی بزرگ‌ترین شهر ریاضی دنیا را بسازی! 🚀</div>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <div class="stats-panel">
+                <div class="stat-box"><span class="stat-val" id="ui-build">۰</span><span class="stat-lbl">ساختمان</span></div>
+                <div class="stat-box"><span class="stat-val" id="ui-coins">۱۰</span><span class="stat-lbl">سکه</span></div>
+                <div class="stat-box"><span class="stat-val" id="ui-stars">۰</span><span class="stat-lbl">ستاره</span></div>
+            </div>
+            <div class="progress-panel" style="margin-top:8px;">
+                <div class="district-name"> <span id="dist-emoji">🏘️</span> <span id="dist-name">محله مبتدی‌ها</span> </div>
+                <div class="bar-bg"><div class="bar-fill" id="prog-bar">۰/۵</div></div>
+            </div>
+        </div>
+        
+        <div class="building-display">
+            <span class="b-icon" id="b-icon">🏠</span>
+            <span class="b-name" id="b-name">خانه کوچک</span>
+        </div>
+    </div>
+
+    <div class="hint-bar">
+        <div style="font-size: 1.5rem;">💡</div>
+        <div id="hint-text" style="flex:1;">برای شروع یک ضرب جدید بسازید.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span>⚙️ تنظیمات</span>
+        </div>
+        <div class="settings-wrap">
+            <select id="sel-mode">
+                <option value="3x2">۳ رقم × ۲ رقم</option>
+                <option value="3x3">۳ رقم × ۳ رقم</option>
+                <option value="4x2">۴ رقم × ۲ رقم</option>
+                <option value="4x3">۴ رقم × ۳ رقم</option>
+                <option value="4x4">۴ رقم × ۴ رقم</option>
+            </select>
+            <button class="btn btn-new" id="btn-new">🎲 سؤال جدید</button>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+            <span style="font-size:0.8rem; color:#888; cursor:pointer;" onclick="document.getElementById('manual-row').style.display=document.getElementById('manual-row').style.display==='none'?'flex':'none'">▼ تنظیم دستی ▼</span>
+        </div>
+        <div class="settings-wrap" id="manual-row" style="display:none; margin-top:5px;">
+            <input type="tel" id="inp-ca" class="cust-inp" placeholder="عدد بالا" style="width:80px;">
+            <input type="tel" id="inp-cb" class="cust-inp" placeholder="عدد پایین" style="width:80px;">
+            <button class="btn btn-cust" id="btn-cust">تایید</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span>⚡ عملیات ساخت</span>
+            <button class="btn btn-solve" id="btn-solve-all">🔓 حل کامل (۱۰ سکه)</button>
+        </div>
+
+        <div class="game-layout">
+            <!-- در دست (Sticky) -->
+            <div class="carry-box">
+                <div id="carry-ui" class="carry-circle"></div>
+                <div class="carry-lbl">یادت نره 🚨 ❗</div>
+            </div>
+            
+            <div class="grid-container-wrapper" id="grid-wrapper">
+                <div id="grid-box" class="grid-box"></div>
+            </div>
+        </div>
+
+        <button class="btn btn-check" id="btn-check">✅ بررسی و ثبت جواب</button>
+        <div id="msg-ui" class="msg-box"></div>
+    </div>
+
+    <div class="thanks-card">
+        <div class="thanks-title">🙏 قدردانی ویژه</div>
+        <div class="thanks-text">
+            از رهنمود های <span>همکاران گرامی</span> 
+            <span></span>
+             که با ایده‌ها و بازخوردهایشان در ساخت این بازی آموزشی کمک کردند ، 
+            صمیمانه سپاس‌گزاریم. 🌟
+        </div>
+    </div>
+
+</div>
+
+<script src="zarb3.js"></script>
+</body>
+</html>
