@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>شهر ریاضی - برج‌های دوقلو (فرایندی و تکنیکی)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- فونت وزیرمتن -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        :root {
+            --font-primary: 'Vazirmatn', sans-serif;
+            --font-numbers: 'Vazirmatn', sans-serif;
+            --bg-grad: linear-gradient(135deg, #4FC3F7, #0288D1);
+            --cell-size: 42px;
+        }
+
+        @media (max-width: 600px) {
+            :root { --cell-size: 34px; }
+        }
+
+        * { box-sizing: border-box; font-feature-settings: "ss01"; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            direction: rtl; text-align: right; font-family: var(--font-primary);
+            margin: 0; padding: 0; background: var(--bg-grad); color: #212121;
+            line-height: 1.6; overscroll-behavior-y: none; 
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 10px; padding-bottom: 80px; }
+
+        /* --- هدر --- */
+        .header-credits {
+            text-align: center; margin-bottom: 12px; padding: 10px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,240,255,0.9));
+            border-radius: 20px; border: 3px solid #1565C0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        .school-name { font-size: 1.1rem; font-weight: 900; color: #0D47A1; margin-bottom: 5px; text-shadow: 1px 1px 1px rgba(0,0,0,0.1); }
+        .dev-name { font-size: 0.95rem; font-weight: 700; color: #0277BD; }
+
+        .game-title {
+            background: rgba(255,255,255,0.95); border-radius: 20px; padding: 12px;
+            margin-bottom: 15px; border: 3px solid #FFC107; text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        h1 { margin: 0; color: #E65100; font-size: 1.6rem; animation: pulse 3s infinite; text-shadow: 2px 2px 0 rgba(255,87,34,0.1); }
+        .tagline { color: #F57C00; font-size: 0.85rem; margin-top: 5px; font-weight: bold; }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        /* --- تب‌ها (طراحی کارت‌های گرافیکی) --- */
+        .tabs-container {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
+            padding: 0 5px;
+        }
+        
+        .tab-btn {
+            /* استایل پایه کارت */
+            background: linear-gradient(145deg, #ffffff, #f0f5f9);
+            border: 2px solid #fff;
+            border-bottom: 6px solid #cfd8dc; /* افکت سه بعدی */
+            border-radius: 24px;
+            padding: 12px 10px;
+            cursor: pointer;
+            font-family: var(--font-primary);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* انیمیشن فنری */
+            flex: 1;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0.85;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* المان‌های داخلی کارت */
+        .tab-btn .t-icon { font-size: 2.2rem; margin-bottom: 5px; filter: grayscale(100%); transition: 0.3s; opacity: 0.6; }
+        .tab-btn .t-title { font-weight: 900; font-size: 1.1rem; color: #607D8B; margin-bottom: 2px; }
+        .tab-btn .t-sub { font-size: 0.75rem; color: #90A4AE; font-weight: 500; }
+
+        /* افکت کلیک */
+        .tab-btn:active {
+            transform: translateY(4px);
+            border-bottom-width: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* --- حالت فعال (Active) --- */
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FFF8E1, #FFECB3); /* زمینه طلایی روشن */
+            border-color: #FFEB3B;
+            border-bottom-color: #FF8F00; /* لبه پایینی تیره‌تر */
+            transform: translateY(-6px) scale(1.03); /* کمی بزرگتر و بالاتر */
+            box-shadow: 0 15px 25px rgba(255, 143, 0, 0.3); /* سایه رنگی */
+            opacity: 1;
+            z-index: 2;
+        }
+        
+        .tab-btn.active .t-icon { 
+            filter: grayscale(0); 
+            opacity: 1; 
+            transform: scale(1.2) rotate(-10deg); /* چرخش کوچک آیکون */
+            animation: bounceIcon 2s infinite;
+        }
+        .tab-btn.active .t-title { color: #E65100; }
+        .tab-btn.active .t-sub { color: #FF6F00; font-weight: 800; }
+
+        @keyframes bounceIcon { 0%, 100% { transform: scale(1.2) translateY(0); } 50% { transform: scale(1.2) translateY(-3px); } }
+
+        .tab-content { display: none; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- داشبورد --- */
+        .dashboard { display: grid; grid-template-columns: 2fr 1.5fr; gap: 10px; margin-bottom: 15px; }
+        .stats-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+        .stat-box { background: #fff; border-radius: 10px; padding: 5px; text-align: center; border: 2px solid #FFCA28; box-shadow: 0 3px 5px rgba(0,0,0,0.1); }
+        .stat-val { font-family: var(--font-numbers); font-weight: 900; font-size: 1.1rem; color: #C2185B; display: block; }
+        .stat-lbl { font-size: 0.75rem; color: #555; }
+
+        .progress-panel { background: #fff; border-radius: 12px; padding: 8px; border: 2px solid #00E676; text-align: center; }
+        .district-name { font-size: 0.9rem; font-weight: 700; color: #2E7D32; margin-bottom: 5px; }
+        .bar-bg { width: 100%; height: 18px; background: #eee; border-radius: 9px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, #00E676, #00C853); width: 0%; transition: width 0.5s; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.75rem; font-family: var(--font-numbers); }
+
+        .building-display {
+            background: rgba(255,255,255,0.8); border-radius: 16px; padding: 10px;
+            text-align: center; margin-bottom: 15px; border: 2px solid #5C6BC0;
+        }
+        .b-icon { font-size: 3.5rem; display: block; animation: bounce 2s infinite; margin-bottom: -5px; }
+        .b-name { color: #3949AB; font-weight: 700; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        .hint-bar {
+            background: rgba(0,0,0,0.8); color: #fff; border-radius: 12px; padding: 10px 15px;
+            margin-bottom: 15px; display: flex; align-items: center; gap: 10px; 
+            font-size: 0.9rem; border-bottom: 4px solid #FFCA28; min-height: 55px;
+        }
+
+        .card {
+            background: #fff; border-radius: 18px; padding: 15px;
+            margin-bottom: 15px; border: 2px solid #0288D1; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+            font-weight: 700; color: #01579B; font-size: 1rem;
+        }
+
+        .settings-wrap { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; background: #E1F5FE; padding: 8px; border-radius: 10px; }
+        select, input.cust-inp { 
+            padding: 8px; border-radius: 8px; border: 1px solid #BDBDBD; 
+            font-family: var(--font-numbers); text-align: center; font-size: 1rem;
+        }
+
+        /* --- Game Layout --- */
+        .game-layout {
+            display: flex; 
+            justify-content: flex-start;
+            align-items: flex-start; 
+            gap: 10px;
+            overflow-x: auto; 
+            padding-bottom: 20px; 
+            position: relative;
+            width: 100%;
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        .carry-box {
+            position: fixed; 
+            top: 450px; left: 20px; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center;
+            cursor: move; touch-action: none; 
+        }
+        .carry-circle {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+            border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 900; font-family: var(--font-numbers); font-size: 1.4rem;
+            opacity: 0; transform: scale(0.5); transition: opacity 0.3s, transform 0.3s;
+        }
+        .carry-circle.show { opacity: 1; transform: scale(1); }
+        .carry-lbl { 
+            font-size: 0.7rem; color: #333; margin-top: 5px; font-weight: bold; 
+            background: rgba(255,255,255,0.9); padding: 2px 8px; border-radius: 12px;
+            white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* کانتینر تقسیم */
+        .division-container {
+            display: flex; direction: ltr; 
+            background: #fff; padding: 15px; border: 2px solid #B0BEC5; border-radius: 14px;
+            position: relative;
+            min-width: max-content; 
+            margin: 0 auto;
+        }
+
+        /* پنل چپ */
+        .left-panel {
+            display: grid; 
+            gap: 2px;
+            padding-right: 10px;
+        }
+
+        .divider-v {
+            width: 4px; background-color: #37474F; border-radius: 2px;
+            margin: 0 5px;
+        }
+
+        /* پنل راست */
+        .right-panel {
+            display: flex; flex-direction: column;
+            width: fit-content;
+            min-width: 50px;
+            padding-left: 5px;
+        }
+
+        .divisor-box {
+            height: var(--cell-size); display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            border-bottom: 4px solid #37474F; 
+            background-color: #FFF9C4; border-radius: 4px 4px 0 0; margin-bottom: 5px;
+            padding: 0 10px;
+        }
+
+        .quotient-box {
+            display: flex; flex-direction: column;
+            gap: 5px; 
+            width: fit-content;
+            align-self: center; 
+        }
+
+        .q-row {
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 2px;
+            padding-bottom: 2px; width: 100%;
+        }
+
+        /* برای حالت تکنیکی وسط چین */
+        .q-row.tech-mode {
+             justify-content: center;
+        }
+
+        /* خط جداکننده جمع در خارج قسمت (فرایندی) */
+        .q-sum-sep {
+            width: 100%; border-bottom: 2px solid #333; margin: 5px 0;
+        }
+        
+        .separator-row {
+            grid-column: 1 / -1;
+            height: 4px;
+            background-color: #333;
+            margin: 0;
+            border-radius: 2px;
+            align-self: center; 
+        }
+
+        /* سلول‌ها */
+        .cell {
+            width: var(--cell-size); height: var(--cell-size);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-numbers); 
+            font-size: 1.3rem; 
+            font-weight: 700;  
+            color: #333;
+            position: relative;
+            flex-shrink: 0; 
+        }
+        
+        .dividend-cell { background-color: #E3F2FD; border-radius: 4px; }
+        .brought-down { color: #1565C0; font-size: 1.1rem; }
+
+        input.g-inp {
+            width: 100%; height: 100%; text-align: center; font-size: 1.1rem;
+            font-family: var(--font-numbers); font-weight: 700;
+            border: 2px solid #CFD8DC; border-radius: 6px; background: #FAFAFA;
+            padding: 0; margin: 0; -moz-appearance: textfield; outline: none;
+        }
+        input.g-inp:focus { border-color: #03A9F4; background: #fff; transform: scale(1.1); z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        input.g-inp.correct { background: #E8F5E9; border-color: #4CAF50; color: #2E7D32; pointer-events: none; }
+        
+        input.g-inp.error { 
+            background: #FFEBEE !important; 
+            border-color: #D32F2F !important; 
+            color: #C62828 !important;
+            animation: shake 0.4s; 
+            box-shadow: 0 0 5px #D32F2F;
+        }
+        input.g-inp.target { border-color: #FFC107 !important; box-shadow: 0 0 10px #FFC107; background: #FFFDE7; }
+        
+        .sub-line { border-bottom: 2px solid #546E7A; position: absolute; bottom: 2px; width: 100%; pointer-events: none; }
+        .op-sign { position: absolute; left: -14px; color: #F44336; font-size: 1.2rem; font-weight: 900; pointer-events: none; }
+        
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+        /* دکمه‌ها */
+        .btn {
+            border: none; padding: 10px 15px; border-radius: 50px; cursor: pointer;
+            font-family: var(--font-primary); font-weight: 700; color: #fff; width: 100%;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1); transition: transform 0.1s;
+        }
+        .btn:active { transform: translateY(2px); box-shadow: none; }
+        .btn-new { background: #0288D1; min-width: 120px; }
+        .btn-solve { background: #FF5722; font-size: 0.85rem; padding: 5px 12px; width: auto; }
+        .btn-check { background: #4CAF50; font-size: 1.1rem; margin-top: 15px; }
+        .btn-cust { background: #455A64; font-size: 0.9rem; padding: 8px; width: auto;}
+
+        .msg-box { margin-top: 10px; padding: 10px; border-radius: 8px; text-align: center; display: none; font-weight: bold;}
+        .msg-box.ok { background: #4CAF50; color: #fff; animation: bounce 0.6s; }
+        .msg-box.err { background: #F44336; color: #fff; animation: shake 0.4s; }
+
+        .thanks-card {
+            background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+            border-radius: 18px; padding: 12px 16px; border: 2px dashed #FF9800;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; font-size: 0.9rem; color: #5D4037;
+        }
+        .thanks-title { font-weight: 800; margin-bottom: 6px; color: #E65100; }
+        .thanks-text span { font-weight: 700; color: #D84315; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="header-credits">
+        <div class="school-name">دبستان پسرانه شاهد مهندس قدملی شبستر</div>
+        <div class="dev-name"><span>توسعۀ بازی :</span> علی اکبر بابائی</div>
+    </div>
+
+    <div class="game-title">
+        <h1>🏗️ شهر ریاضی - برج تقسیم 🏗️</h1>
+        <div class="tagline">مهندس کوچولو! شهرت رو با حل تقسیم‌ها بساز 🏙️</div>
+    </div>
+
+    <!-- داشبورد مشترک -->
+    <div class="dashboard">
+        <div>
+            <div class="stats-panel">
+                <div class="stat-box"><span class="stat-val" id="ui-build">۰</span><span class="stat-lbl">ساختمان</span></div>
+                <div class="stat-box"><span class="stat-val" id="ui-coins">۱۰</span><span class="stat-lbl">سکه</span></div>
+                <div class="stat-box"><span class="stat-val" id="ui-stars">۰</span><span class="stat-lbl">ستاره</span></div>
+            </div>
+            <div class="progress-panel" style="margin-top:8px;">
+                <div class="district-name"> <span id="dist-emoji">🏘️</span> <span id="dist-name">محله مبتدی‌ها</span> </div>
+                <div class="bar-bg"><div class="bar-fill" id="prog-bar">۰/۵</div></div>
+            </div>
+        </div>
+        
+        <div class="building-display">
+            <span class="b-icon" id="b-icon">🏠</span>
+            <span class="b-name" id="b-name">خانه کوچک</span>
+        </div>
+    </div>
+
+    <!-- حباب مشترک درگ برای عملیات -->
+    <div class="carry-box" id="draggable-bubble">
+        <div id="carry-ui" class="carry-circle"></div>
+        <div class="carry-lbl">چه کنم 🤔</div>
+    </div>
+
+    <!-- تب‌ها (طراحی کارت جدید با آیکون پازل) -->
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('proc')">
+            <span class="t-icon">🧩</span>
+            <span class="t-title">روش فرایندی</span>
+            <span class="t-sub">گام به گام و دقیق</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('tech')">
+            <span class="t-icon">🚀</span>
+            <span class="t-title">روش تکنیکی</span>
+            <span class="t-sub">سریع و حرفه‌ای</span>
+        </button>
+    </div>
+
+    <!-- ======================= محتوای روش فرایندی ======================= -->
+    <div id="tab-process" class="tab-content active">
+        <div class="hint-bar">
+            <div style="font-size: 1.5rem;">💡</div>
+            <div id="hint-text-proc" style="flex:1;">دکمه سؤال جدید را بزنید.</div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span>⚙️ تنظیمات (فرایندی)</span></div>
+            <div class="settings-wrap">
+                <select id="sel-mode-proc">
+                    <option value="2x1">۲ رقم ÷ ۱ رقم</option>
+                    <option value="3x1">۳ رقم ÷ ۱ رقم</option>
+                    <option value="4x1">۴ رقم ÷ ۱ رقم</option>
+                    <option value="5x1">۵ رقم ÷ ۱ رقم</option>
+                    <option value="6x1">۶ رقم ÷ ۱ رقم</option>
+                    <option value="2x2">۲ رقم ÷ ۲ رقم</option>
+                    <option value="3x2">۳ رقم ÷ ۲ رقم</option>
+                    <option value="4x2">۴ رقم ÷ ۲ رقم</option>
+                    <option value="5x2">۵ رقم ÷ ۲ رقم</option>
+                    <option value="6x2">۶ رقم ÷ ۲ رقم</option>
+                </select>
+                <button class="btn btn-new" id="btn-new-proc">🎲 سؤال جدید</button>
+            </div>
+            <div style="text-align:center; margin-top:8px;">
+                <span style="font-size:0.8rem; color:#888; cursor:pointer;" onclick="document.getElementById('manual-row-proc').style.display=document.getElementById('manual-row-proc').style.display==='none'?'flex':'none'">▼ تنظیم دستی ▼</span>
+            </div>
+            <div class="settings-wrap" id="manual-row-proc" style="display:none; margin-top:5px;">
+                <input type="tel" id="inp-ca-proc" class="cust-inp" placeholder="مقسوم" style="width:100px;">
+                <input type="tel" id="inp-cb-proc" class="cust-inp" placeholder="مقسوم علیه" style="width:100px;">
+                <button class="btn btn-cust" id="btn-cust-proc">تایید</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>⚡ عملیات ساخت</span>
+                <button class="btn btn-solve" id="btn-solve-all-proc">🔓 حل کامل (۱۰ سکه)</button>
+            </div>
+
+            <div class="game-layout">
+                <div class="division-container">
+                    <div class="left-panel" id="grid-left-proc"></div>
+                    <div class="divider-v"></div>
+                    <div class="right-panel">
+                        <div class="divisor-box" id="ui-divisor-proc"></div>
+                        <div class="quotient-box" id="grid-right-proc"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-check" id="btn-check-proc">✅ بررسی و ثبت جواب</button>
+            <div id="msg-ui-proc" class="msg-box"></div>
+        </div>
+    </div>
+
+    <!-- ======================= محتوای روش تکنیکی ======================= -->
+    <div id="tab-technical" class="tab-content">
+        <div class="hint-bar">
+            <div style="font-size: 1.5rem;">💡</div>
+            <div id="hint-text-tech" style="flex:1;">دکمه سؤال جدید را بزنید.</div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span>⚙️ تنظیمات (تکنیکی)</span></div>
+            <div class="settings-wrap">
+                <select id="sel-mode-tech">
+                    <option value="2x1">۲ رقم ÷ ۱ رقم</option>
+                    <option value="3x1">۳ رقم ÷ ۱ رقم</option>
+                    <option value="4x1">۴ رقم ÷ ۱ رقم</option>
+                    <option value="5x1">۵ رقم ÷ ۱ رقم</option>
+                    <option value="6x1">۶ رقم ÷ ۱ رقم</option>
+                    <option value="2x2">۲ رقم ÷ ۲ رقم</option>
+                    <option value="3x2">۳ رقم ÷ ۲ رقم</option>
+                    <option value="4x2">۴ رقم ÷ ۲ رقم</option>
+                    <option value="5x2">۵ رقم ÷ ۲ رقم</option>
+                    <option value="6x2">۶ رقم ÷ ۲ رقم</option>
+                </select>
+                <button class="btn btn-new" id="btn-new-tech">🎲 سؤال جدید</button>
+            </div>
+            <div style="text-align:center; margin-top:8px;">
+                <span style="font-size:0.8rem; color:#888; cursor:pointer;" onclick="document.getElementById('manual-row-tech').style.display=document.getElementById('manual-row-tech').style.display==='none'?'flex':'none'">▼ تنظیم دستی ▼</span>
+            </div>
+            <div class="settings-wrap" id="manual-row-tech" style="display:none; margin-top:5px;">
+                <input type="tel" id="inp-ca-tech" class="cust-inp" placeholder="مقسوم" style="width:100px;">
+                <input type="tel" id="inp-cb-tech" class="cust-inp" placeholder="مقسوم علیه" style="width:100px;">
+                <button class="btn btn-cust" id="btn-cust-tech">تایید</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>⚡ عملیات ساخت</span>
+                <button class="btn btn-solve" id="btn-solve-all-tech">🔓 حل کامل (۱۰ سکه)</button>
+            </div>
+
+            <div class="game-layout">
+                <div class="division-container">
+                    <div class="left-panel" id="grid-left-tech"></div>
+                    <div class="divider-v"></div>
+                    <div class="right-panel">
+                        <div class="divisor-box" id="ui-divisor-tech"></div>
+                        <div class="quotient-box" id="grid-right-tech"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-check" id="btn-check-tech">✅ بررسی و ثبت جواب</button>
+            <div id="msg-ui-tech" class="msg-box"></div>
+        </div>
+    </div>
+
+    <!-- فوتر مشترک -->
+    <div class="thanks-card">
+        <div class="thanks-title">🙏 قدردانی ویژه</div>
+        <div class="thanks-text">
+            از رهنمود های <span>همکاران گرامی</span> 
+            که با ایده‌ها و بازخوردهایشان در ساخت این بازی آموزشی کمک کردند ، 
+            صمیمانه سپاس‌گزاریم. 🌟
+        </div>
+    </div>
+
+</div>
+
+<script src="taghsim.js"></script>
+</body>
+</html>
