@@ -30,7 +30,6 @@
 
         .container { max-width: 900px; margin: 0 auto; padding: 10px; padding-bottom: 80px; }
 
-        /* --- هدر --- */
         .header-credits {
             text-align: center; margin-bottom: 12px; padding: 10px;
             background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,240,255,0.9));
@@ -50,22 +49,20 @@
 
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-        /* --- تب‌ها (طراحی کارت‌های گرافیکی) --- */
         .tabs-container {
             display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
             padding: 0 5px;
         }
         
         .tab-btn {
-            /* استایل پایه کارت */
             background: linear-gradient(145deg, #ffffff, #f0f5f9);
             border: 2px solid #fff;
-            border-bottom: 6px solid #cfd8dc; /* افکت سه بعدی */
+            border-bottom: 6px solid #cfd8dc;
             border-radius: 24px;
             padding: 12px 10px;
             cursor: pointer;
             font-family: var(--font-primary);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* انیمیشن فنری */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             flex: 1;
             max-width: 400px;
             display: flex;
@@ -79,25 +76,22 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* المان‌های داخلی کارت */
         .tab-btn .t-icon { font-size: 2.2rem; margin-bottom: 5px; filter: grayscale(100%); transition: 0.3s; opacity: 0.6; }
         .tab-btn .t-title { font-weight: 900; font-size: 1.1rem; color: #607D8B; margin-bottom: 2px; }
         .tab-btn .t-sub { font-size: 0.75rem; color: #90A4AE; font-weight: 500; }
 
-        /* افکت کلیک */
         .tab-btn:active {
             transform: translateY(4px);
             border-bottom-width: 2px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* --- حالت فعال (Active) --- */
         .tab-btn.active {
-            background: linear-gradient(135deg, #FFF8E1, #FFECB3); /* زمینه طلایی روشن */
+            background: linear-gradient(135deg, #FFF8E1, #FFECB3);
             border-color: #FFEB3B;
-            border-bottom-color: #FF8F00; /* لبه پایینی تیره‌تر */
-            transform: translateY(-6px) scale(1.03); /* کمی بزرگتر و بالاتر */
-            box-shadow: 0 15px 25px rgba(255, 143, 0, 0.3); /* سایه رنگی */
+            border-bottom-color: #FF8F00;
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 15px 25px rgba(255, 143, 0, 0.3);
             opacity: 1;
             z-index: 2;
         }
@@ -105,7 +99,7 @@
         .tab-btn.active .t-icon { 
             filter: grayscale(0); 
             opacity: 1; 
-            transform: scale(1.2) rotate(-10deg); /* چرخش کوچک آیکون */
+            transform: scale(1.2) rotate(-10deg);
             animation: bounceIcon 2s infinite;
         }
         .tab-btn.active .t-title { color: #E65100; }
@@ -117,7 +111,6 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- داشبورد --- */
         .dashboard { display: grid; grid-template-columns: 2fr 1.5fr; gap: 10px; margin-bottom: 15px; }
         .stats-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
         .stat-box { background: #fff; border-radius: 10px; padding: 5px; text-align: center; border: 2px solid #FFCA28; box-shadow: 0 3px 5px rgba(0,0,0,0.1); }
@@ -158,7 +151,6 @@
             font-family: var(--font-numbers); text-align: center; font-size: 1rem;
         }
 
-        /* --- Game Layout --- */
         .game-layout {
             display: flex; 
             justify-content: flex-start;
@@ -192,7 +184,6 @@
             white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* کانتینر تقسیم */
         .division-container {
             display: flex; direction: ltr; 
             background: #fff; padding: 15px; border: 2px solid #B0BEC5; border-radius: 14px;
@@ -201,7 +192,6 @@
             margin: 0 auto;
         }
 
-        /* پنل چپ */
         .left-panel {
             display: grid; 
             gap: 2px;
@@ -213,7 +203,6 @@
             margin: 0 5px;
         }
 
-        /* پنل راست */
         .right-panel {
             display: flex; flex-direction: column;
             width: fit-content;
@@ -245,12 +234,10 @@
             padding-bottom: 2px; width: 100%;
         }
 
-        /* برای حالت تکنیکی وسط چین */
         .q-row.tech-mode {
              justify-content: center;
         }
 
-        /* خط جداکننده جمع در خارج قسمت (فرایندی) */
         .q-sum-sep {
             width: 100%; border-bottom: 2px solid #333; margin: 5px 0;
         }
@@ -264,7 +251,6 @@
             align-self: center; 
         }
 
-        /* سلول‌ها */
         .cell {
             width: var(--cell-size); height: var(--cell-size);
             display: flex; align-items: center; justify-content: center;
@@ -276,7 +262,16 @@
             flex-shrink: 0; 
         }
         
-        .dividend-cell { background-color: #E3F2FD; border-radius: 4px; }
+        .dividend-cell { background-color: #E3F2FD; border-radius: 4px; transition: all 0.3s; }
+        
+        .dividend-cell.source-highlight {
+            background-color: #FFEB3B;
+            transform: scale(1.2);
+            z-index: 10;
+            border: 2px solid #FF9800;
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.8);
+        }
+
         .brought-down { color: #1565C0; font-size: 1.1rem; }
 
         input.g-inp {
@@ -303,7 +298,6 @@
         
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 
-        /* دکمه‌ها */
         .btn {
             border: none; padding: 10px 15px; border-radius: 50px; cursor: pointer;
             font-family: var(--font-primary); font-weight: 700; color: #fff; width: 100%;
@@ -326,6 +320,57 @@
         }
         .thanks-title { font-weight: 800; margin-bottom: 6px; color: #E65100; }
         .thanks-text span { font-weight: 700; color: #D84315; }
+
+        .brought-down.pending {
+            opacity: 0;
+            transform: translateY(var(--start-y)) scale(1.4); 
+            visibility: hidden;
+            font-weight: 900;
+            color: #1976D2;
+            text-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+        }
+
+        .brought-down.animate-drop {
+            visibility: visible;
+            animation: dropNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .drop-arrow {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #2196F3;
+            font-size: 1.4rem;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .drop-arrow.show-arrow {
+            animation: arrowMove 0.8s ease-in-out;
+        }
+
+        @keyframes dropNumber {
+            0% { 
+                opacity: 1; 
+                transform: translateY(var(--start-y)) scale(1.4); 
+            }
+            60% {
+                transform: translateY(-10%) scale(1.3);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        @keyframes arrowMove {
+            0%   { opacity: 0; transform: translate(-50%, var(--start-y)); }
+            50%  { opacity: 1; transform: translate(-50%, -5px); }
+            100% { opacity: 0; transform: translate(-50%, 15px); }
+        }
     </style>
 </head>
 <body>
@@ -342,7 +387,6 @@
         <div class="tagline">مهندس کوچولو! شهرت رو با حل تقسیم‌ها بساز 🏙️</div>
     </div>
 
-    <!-- داشبورد مشترک -->
     <div class="dashboard">
         <div>
             <div class="stats-panel">
@@ -362,13 +406,11 @@
         </div>
     </div>
 
-    <!-- حباب مشترک درگ برای عملیات -->
     <div class="carry-box" id="draggable-bubble">
         <div id="carry-ui" class="carry-circle"></div>
         <div class="carry-lbl">چه کنم 🤔</div>
     </div>
 
-    <!-- تب‌ها (طراحی کارت جدید با آیکون پازل) -->
     <div class="tabs-container">
         <button class="tab-btn active" onclick="switchTab('proc')">
             <span class="t-icon">🧩</span>
@@ -382,7 +424,6 @@
         </button>
     </div>
 
-    <!-- ======================= محتوای روش فرایندی ======================= -->
     <div id="tab-process" class="tab-content active">
         <div class="hint-bar">
             <div style="font-size: 1.5rem;">💡</div>
@@ -438,7 +479,6 @@
         </div>
     </div>
 
-    <!-- ======================= محتوای روش تکنیکی ======================= -->
     <div id="tab-technical" class="tab-content">
         <div class="hint-bar">
             <div style="font-size: 1.5rem;">💡</div>
@@ -494,7 +534,6 @@
         </div>
     </div>
 
-    <!-- فوتر مشترک -->
     <div class="thanks-card">
         <div class="thanks-title">🙏 قدردانی ویژه</div>
         <div class="thanks-text">
