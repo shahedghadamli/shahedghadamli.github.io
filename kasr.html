@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>بازی کسرها – ساده‌سازی، تساوی و مقایسه</title>
+<meta name="description" content="بازی آموزشی کسرها برای دانش‌آموزان پایهٔ چهارم: ساده کردن، کسرهای مساوی، عدد گمشده و مقایسهٔ کسرها">
+<meta name="theme-color" content="#F6F5F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#191919" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231F6FC5'/%3E%3Ccircle cx='32' cy='32' r='20' fill='%23D6E6F8'/%3E%3Cpath d='M32 32V12a20 20 0 1 1-20 20z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap">
+<style>
+/* =====================================================================
+ *  طراحی: پالت روشن/تیره، تایپوگرافی فارسی، چیدمان واکنش‌گرا
+ * ===================================================================== */
+:root {
+  color-scheme: light;
+  --font: "Vazirmatn", "Vazir", Tahoma, "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --bg: #F6F5F3;
+  --surface: #FFFFFF;
+  --surface-2: #F9F8F7;
+  --surface-3: #F0EFED;
+  --border: #E6E5E3;
+  --border-strong: #D3D1CD;
+  --text: #2C2C2B;
+  --text-2: #64615C;
+  --switch-off: #8F8C87;
+
+  --primary: #1F6FC5;
+  --primary-hover: #1A5EA8;
+  --primary-soft: #E5F2FC;
+  --primary-text: #1D67B8;
+  --on-primary: #FFFFFF;
+
+  --green: #46A171;   --green-soft: #E8F1EC;  --green-text: #276F47;
+  --red: #E56458;     --red-soft: #FCE9E7;    --red-text: #A93B2A;
+  --orange: #D5803B;  --orange-soft: #FBEBDE; --orange-text: #94501A;
+  --gold: #E9A93A;    --gold-stroke: #B7790F; --gold-soft: #FDF3DC; --gold-text: #8A5A0B;
+
+  --c-simplify: #2783DE;   --c-simplify-soft: #E5F2FC;
+  --c-equivalent: #9B6AC8; --c-equivalent-soft: #F3ECFA;
+  --c-missing: #378C60;    --c-missing-soft: #E6F2EB;
+  --c-compare: #C06E2B;    --c-compare-soft: #FBEEE2;
+
+  --bar-fill: #5E9FE8;
+  --bar-line: rgba(0, 0, 0, .28);
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, .05), 0 4px 12px rgba(0, 0, 0, .04);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, .22);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #191919;
+    --surface: #202020;
+    --surface-2: #262625;
+    --surface-3: #2F2F2E;
+    --border: rgba(255, 255, 255, .14);
+    --border-strong: rgba(255, 255, 255, .26);
+    --text: #FFFFFF;
+    --text-2: rgba(255, 255, 255, .68);
+    --switch-off: rgba(255, 255, 255, .38);
+
+    --primary: #1F6FC5;
+    --primary-hover: #2A7FD9;
+    --primary-soft: rgba(94, 159, 232, .14);
+    --primary-text: #7DB3EE;
+
+    --green: #72BC8F;   --green-soft: rgba(114, 188, 143, .13); --green-text: #8FD0A8;
+    --red: #E97366;     --red-soft: rgba(233, 115, 102, .13);   --red-text: #F29B90;
+    --orange: #DE9255;  --orange-soft: rgba(222, 146, 85, .14); --orange-text: #EDB07E;
+    --gold: #EAC26B;    --gold-stroke: #C99A35; --gold-soft: rgba(234, 194, 107, .13); --gold-text: #F0CF86;
+
+    --c-simplify: #5E9FE8;   --c-simplify-soft: rgba(94, 159, 232, .15);
+    --c-equivalent: #BF8EDA; --c-equivalent-soft: rgba(191, 142, 218, .15);
+    --c-missing: #72BC8F;    --c-missing-soft: rgba(114, 188, 143, .15);
+    --c-compare: #DE9255;    --c-compare-soft: rgba(222, 146, 85, .15);
+
+    --bar-fill: #3F86D6;
+    --bar-line: rgba(255, 255, 255, .34);
+    --shadow: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg: #191919;
+    --surface: #202020;
+    --surface-2: #262625;
+    --surface-3: #2F2F2E;
+    --border: rgba(255, 255, 255, .14);
+    --border-strong: rgba(255, 255, 255, .26);
+    --text: #FFFFFF;
+    --text-2: rgba(255, 255, 255, .68);
+    --switch-off: rgba(255, 255, 255, .38);
+
+    --primary: #1F6FC5;
+    --primary-hover: #2A7FD9;
+    --primary-soft: rgba(94, 159, 232, .14);
+    --primary-text: #7DB3EE;
+
+    --green: #72BC8F;   --green-soft: rgba(114, 188, 143, .13); --green-text: #8FD0A8;
+    --red: #E97366;     --red-soft: rgba(233, 115, 102, .13);   --red-text: #F29B90;
+    --orange: #DE9255;  --orange-soft: rgba(222, 146, 85, .14); --orange-text: #EDB07E;
+    --gold: #EAC26B;    --gold-stroke: #C99A35; --gold-soft: rgba(234, 194, 107, .13); --gold-text: #F0CF86;
+
+    --c-simplify: #5E9FE8;   --c-simplify-soft: rgba(94, 159, 232, .15);
+    --c-equivalent: #BF8EDA; --c-equivalent-soft: rgba(191, 142, 218, .15);
+    --c-missing: #72BC8F;    --c-missing-soft: rgba(114, 188, 143, .15);
+    --c-compare: #DE9255;    --c-compare-soft: rgba(222, 146, 85, .15);
+
+    --bar-fill: #3F86D6;
+    --bar-line: rgba(255, 255, 255, .34);
+    --shadow: none;
+  }
+}
+
+/* ---------- پایه ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+h1, h2, h3, p { margin: 0; }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.icon {
+  width: 22px; height: 22px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.icon-fill { fill: currentColor; stroke: none; }
+
+/* ---------- قاب کلی ---------- */
+.app {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+main { flex: 1; }
+
+.site-header {
+  position: relative;
+  text-align: center;
+  padding: 4px 0 0;
+}
+.bismillah { font-size: 14px; font-weight: 500; color: var(--primary-text); line-height: 1.7; }
+.school { font-size: 16px; font-weight: 700; line-height: 1.6; }
+.header-actions { display: flex; justify-content: space-between; align-items: center; min-height: 44px; margin-bottom: 2px; }
+.theme-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font-size: 14px; font-weight: 700; }
+.theme-btn:hover { background: var(--surface-3); }
+
+.site-footer {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-2);
+  padding-bottom: 4px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- دکمه‌ها ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 20px;
+  border: 1px solid transparent; border-radius: var(--radius);
+  font-size: 16px; font-weight: 700; line-height: 1.2;
+  text-decoration: none; white-space: nowrap;
+  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .1s ease;
+}
+.btn:active:not(:disabled) { transform: scale(.98); }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+.btn-secondary:hover { background: var(--surface-3); }
+.btn-ghost { background: transparent; color: var(--text-2); }
+.btn-ghost:hover { background: var(--surface-3); color: var(--text); }
+.btn-lg { min-height: 56px; font-size: 18px; width: 100%; }
+.btn .icon { width: 20px; height: 20px; }
+
+.icon-btn {
+  position: relative;
+  display: inline-grid; place-items: center; flex: none;
+  width: 44px; height: 44px; padding: 0;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); color: var(--text-2);
+  touch-action: manipulation;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.icon-btn:hover:not(:disabled) { background: var(--surface-3); color: var(--text); }
+.icon-btn:disabled { opacity: .45; }
+
+/* ---------- صفحه‌ها ---------- */
+.screen.is-entering { animation: screen-in .3s ease both; }
+@keyframes screen-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- صفحهٔ اصلی ---------- */
+.home-card { padding: 24px; }
+.hero { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.logo { width: 64px; height: 64px; flex: none; }
+.logo .l-bg { fill: var(--primary-soft); }
+.logo .l-light { fill: var(--surface); }
+.logo .l-fill { fill: var(--c-simplify); }
+.logo .l-sep { stroke: var(--primary-soft); stroke-width: 3; }
+.logo .l-ring { fill: none; stroke: var(--c-simplify); stroke-width: 2.5; }
+.hero h1 { font-size: 30px; font-weight: 800; line-height: 1.3; }
+.hero p { margin-top: 4px; color: var(--text-2); font-size: 15px; line-height: 1.6; }
+
+.step-title {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 12px;
+  font-size: 15px; font-weight: 700; color: var(--text-2);
+}
+.step-num {
+  display: inline-grid; place-items: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--surface-3); color: var(--text);
+  font-size: 14px; line-height: 1;
+}
+
+.m-simplify   { --c: var(--c-simplify);   --c-soft: var(--c-simplify-soft); }
+.m-equivalent { --c: var(--c-equivalent); --c-soft: var(--c-equivalent-soft); }
+.m-missing    { --c: var(--c-missing);    --c-soft: var(--c-missing-soft); }
+.m-compare    { --c: var(--c-compare);    --c-soft: var(--c-compare-soft); }
+
+.mode-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+.mode-card {
+  position: relative;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; row-gap: 2px;
+  align-items: center; align-content: center;
+  min-height: 84px; padding: 14px 14px;
+  text-align: start;
+  background: var(--surface);
+  border: 2px solid var(--border); border-radius: var(--radius);
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.mode-card:hover { border-color: var(--border-strong); }
+.mode-card[aria-checked="true"] { border-color: var(--c); background: var(--c-soft); }
+.mode-icon {
+  display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 10px;
+  color: var(--c); background: var(--c-soft);
+}
+.mode-card .mode-icon { grid-row: 1 / span 2; }
+.mode-card[aria-checked="true"] .mode-icon { background: var(--surface); }
+.mode-title { font-size: 16px; font-weight: 700; line-height: 1.4; padding-inline-end: 24px; }
+.mode-desc { font-size: 14px; color: var(--text-2); line-height: 1.5; }
+.mode-check {
+  position: absolute; top: 10px; inset-inline-end: 10px;
+  display: none; place-items: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--c); color: #fff;
+}
+.mode-check .icon { width: 14px; height: 14px; stroke-width: 3; }
+.mode-card[aria-checked="true"] .mode-check { display: grid; }
+
+.level-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+.level-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 68px; padding: 8px;
+  background: var(--surface);
+  border: 2px solid var(--border); border-radius: var(--radius);
+  font-size: 16px; font-weight: 700;
+  transition: border-color .15s ease, background-color .15s ease, color .15s ease;
+}
+.level-btn:hover { border-color: var(--border-strong); }
+.level-btn[aria-checked="true"] { border-color: var(--primary); background: var(--primary-soft); color: var(--primary-text); }
+
+.stars-mini { display: inline-flex; gap: 2px; }
+.stars-mini .icon { width: 16px; height: 16px; stroke-width: 1.6; }
+.star-on { fill: var(--gold); stroke: var(--gold-stroke); }
+.star-off { fill: none; stroke: var(--switch-off); }
+
+.settings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+.toggle {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 60px; padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface-2);
+  cursor: pointer;
+}
+.toggle input {
+  appearance: none; -webkit-appearance: none;
+  position: relative; flex: none;
+  width: 44px; height: 26px; margin: 0;
+  border-radius: 13px;
+  background: var(--switch-off);
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+.toggle input::after {
+  content: "";
+  position: absolute; top: 3px; right: 3px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+  transition: transform .2s ease;
+}
+.toggle input:checked { background: var(--primary); }
+.toggle input:checked::after { transform: translateX(-18px); }
+.toggle-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.4; }
+.toggle-text strong { font-size: 16px; }
+.toggle-text small { font-size: 14px; color: var(--text-2); }
+
+.home-meta { margin-top: 12px; text-align: center; font-size: 14px; color: var(--text-2); }
+.home-links { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+
+/* ---------- صفحهٔ بازی ---------- */
+.game-card { overflow: hidden; }
+.game-top {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.game-title { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; }
+.game-title .mode-icon { width: 36px; height: 36px; border-radius: 9px; }
+.game-title .mode-icon .icon { width: 20px; height: 20px; }
+.game-title-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.level-tag {
+  flex: none;
+  padding: 2px 10px; border-radius: 999px;
+  background: var(--surface-3); color: var(--text-2);
+  font-size: 14px; font-weight: 500;
+}
+.hint-count {
+  position: absolute; top: -6px; left: -6px;
+  min-width: 20px; height: 20px; padding: 0 5px;
+  display: grid; place-items: center;
+  border-radius: 10px; border: 2px solid var(--surface);
+  background: var(--gold); color: #2C2C2B;
+  font-size: 12px; font-weight: 800; line-height: 1;
+}
+.icon-btn:disabled .hint-count { background: var(--border-strong); }
+
+.game-body { padding: 16px 20px 20px; }
+.status-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.q-counter { font-size: 15px; font-weight: 700; }
+.stats { display: flex; align-items: center; gap: 8px; }
+.stat-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 32px; padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  font-size: 15px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.stat-chip .icon { width: 18px; height: 18px; }
+.score-chip .icon { fill: var(--gold); stroke: var(--gold-stroke); stroke-width: 1.6; }
+.combo-chip { background: var(--orange-soft); color: var(--orange-text); }
+.chip-bump { animation: bump .35s ease; }
+@keyframes bump { 40% { transform: scale(1.12); } }
+
+.progress { display: grid; grid-template-columns: repeat(var(--n, 10), minmax(0, 1fr)); gap: 4px; margin-bottom: 14px; }
+.seg { height: 8px; border-radius: 4px; background: var(--surface-3); transition: background-color .25s ease; }
+.seg.is-current { background: var(--primary); opacity: .4; }
+.seg.is-correct { background: var(--green); }
+.seg.is-wrong { background: var(--red); }
+
+.timer { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: var(--text-2); }
+.timer .icon { width: 20px; height: 20px; }
+.timer-track { flex: 1; height: 8px; border-radius: 4px; background: var(--surface-3); overflow: hidden; }
+.timer-fill {
+  height: 100%; width: 100%;
+  border-radius: 4px;
+  background: var(--primary);
+  transform-origin: right center;
+  will-change: transform;
+  transition: background-color .3s ease;
+}
+.timer-text { min-width: 76px; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: left; }
+.timer.is-warn .timer-fill { background: var(--orange); }
+.timer.is-danger .timer-fill { background: var(--red); }
+.timer.is-danger { color: var(--red-text); }
+.timer.is-danger .timer-text { animation: pulse 1s ease-in-out infinite; }
+.timer.is-stopped .timer-text { animation: none; }
+.timer.is-off { visibility: hidden; }
+@keyframes pulse { 50% { transform: scale(1.08); } }
+
+.q-card {
+  padding: 18px 16px 20px;
+  margin-bottom: 16px;
+  text-align: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.q-prompt { font-size: 18px; font-weight: 700; line-height: 1.6; margin-bottom: 10px; }
+.q-stem {
+  display: flex; align-items: center; justify-content: center; gap: 20px;
+  min-height: 116px;
+  font-size: 46px;
+}
+.q-hint {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-top: 14px; padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--gold-soft); color: var(--gold-text);
+  font-size: 15px; font-weight: 500; text-align: start; line-height: 1.7;
+}
+.q-hint .icon { width: 20px; height: 20px; margin-top: 3px; }
+
+/* کسر عمودی */
+.frac {
+  display: inline-flex; flex-direction: column; align-items: stretch;
+  vertical-align: middle;
+  text-align: center;
+  font-weight: 700; line-height: 1.12;
+  font-variant-numeric: tabular-nums;
+}
+.frac > .fn, .frac > .fd { display: block; padding: 0 .16em; white-space: nowrap; }
+.frac > .fl { display: block; height: max(2px, .07em); margin: .07em 0; border-radius: 2px; background: currentColor; }
+.frac.inline { font-size: .9em; margin: 0 .15em; line-height: 1.05; }
+.frac.hl { color: var(--green-text); }
+.eq { display: inline-flex; align-items: center; gap: .32em; direction: ltr; }
+.op { font-weight: 500; color: var(--text-2); }
+.or-word { font-size: 18px; font-weight: 500; color: var(--text-2); }
+.slot {
+  display: inline-grid; place-items: center;
+  min-width: 1.35em; padding: 0 .12em;
+  border: 2px dashed var(--primary); border-radius: 8px;
+  color: var(--primary-text); line-height: 1.08;
+}
+.slot.is-filled { border-style: solid; border-color: var(--green); background: var(--green-soft); color: var(--green-text); }
+.m { direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
+
+/* گزینه‌ها */
+.options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.opt {
+  position: relative;
+  display: grid; place-items: center;
+  min-height: 96px; padding: 10px;
+  background: var(--surface);
+  border: 2px solid var(--border-strong); border-radius: var(--radius);
+  box-shadow: 0 3px 0 var(--border-strong);
+  font-size: 30px;
+  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+  transition: transform .12s ease, border-color .15s ease, background-color .15s ease, box-shadow .12s ease, opacity .2s ease;
+}
+.opt:hover:not(:disabled) { border-color: var(--primary); box-shadow: 0 3px 0 var(--primary); transform: translateY(-1px); }
+.opt:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 var(--border-strong); }
+.opt-num { font-size: 36px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.opt-wide { grid-column: 1 / -1; min-height: 64px; font-size: 18px; }
+.opt-word { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+.opt .key {
+  position: absolute; top: 6px; inset-inline-start: 10px;
+  font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--text-2);
+}
+.opt .mark {
+  position: absolute; top: 8px; inset-inline-end: 8px;
+  display: none; place-items: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  color: #fff;
+}
+.opt .mark .icon { width: 16px; height: 16px; stroke-width: 3; }
+.opt.is-correct { border-color: var(--green); background: var(--green-soft); box-shadow: 0 3px 0 var(--green); color: var(--green-text); opacity: 1; }
+.opt.is-correct .mark { display: grid; background: var(--green); }
+.opt.is-wrong { border-color: var(--red); background: var(--red-soft); box-shadow: 0 3px 0 var(--red); color: var(--red-text); opacity: 1; }
+.opt.is-wrong .mark { display: grid; background: var(--red); }
+.opt.is-correct .key, .opt.is-wrong .key { visibility: hidden; }
+.opt.is-dim { opacity: .5; }
+.opt.is-out { opacity: .35; }
+.opt.is-out::after {
+  content: ""; position: absolute; left: 18%; right: 18%; top: 50%;
+  height: 3px; border-radius: 2px; background: var(--text-2);
+  transform: rotate(-14deg);
+}
+.opt.is-pop { animation: pop .42s ease; }
+.opt.is-shake { animation: shake .42s ease; }
+@keyframes pop { 40% { transform: scale(1.05); } }
+@keyframes shake {
+  20% { transform: translateX(-6px); } 40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); } 80% { transform: translateX(4px); }
+}
+@media (hover: none) { .opt .key { display: none; } }
+
+.burst { position: absolute; inset: 0; pointer-events: none; }
+.burst i {
+  position: absolute; top: 50%; left: 50%;
+  width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
+  background: var(--green);
+  animation: burst .6s ease-out forwards;
+}
+@keyframes burst {
+  from { transform: translate(0, 0) scale(.6); opacity: 1; }
+  to { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
+.float-pts {
+  position: absolute; top: -6px; left: 50%;
+  font-size: 18px; font-weight: 800; color: var(--green-text);
+  pointer-events: none;
+  animation: float-up 1s ease-out forwards;
+}
+@keyframes float-up {
+  0% { opacity: 0; transform: translate(-50%, 6px); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -30px); }
+}
+
+/* بازخورد */
+.feedback {
+  margin-top: 16px; padding: 16px;
+  border: 1px solid transparent; border-radius: var(--radius);
+  animation: fb-in .28s ease both;
+}
+@keyframes fb-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.feedback.is-ok { background: var(--green-soft); border-color: var(--green); }
+.feedback.is-bad { background: var(--red-soft); border-color: var(--red); }
+.feedback.is-time { background: var(--orange-soft); border-color: var(--orange); }
+.fb-head { display: flex; align-items: center; gap: 10px; }
+.fb-icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: #fff; flex: none; }
+.fb-icon .icon { width: 18px; height: 18px; stroke-width: 3; }
+.is-ok .fb-icon { background: var(--green); }
+.is-bad .fb-icon { background: var(--red); }
+.is-time .fb-icon { background: var(--orange); }
+.fb-title { flex: 1; font-size: 18px; font-weight: 800; }
+.is-ok .fb-title { color: var(--green-text); }
+.is-bad .fb-title { color: var(--red-text); }
+.is-time .fb-title { color: var(--orange-text); }
+.fb-points { font-size: 18px; font-weight: 800; color: var(--green-text); font-variant-numeric: tabular-nums; }
+.fb-text { margin-top: 8px; font-size: 16px; line-height: 1.9; }
+.fb-note { margin-top: 8px; font-size: 16px; font-weight: 700; line-height: 1.8; }
+.expr {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px;
+  margin-top: 12px; padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 24px;
+}
+.expr .and { font-size: 16px; color: var(--text-2); }
+
+.bars { display: grid; gap: 10px; margin-top: 12px; padding: 12px; border-radius: var(--radius-sm); background: var(--surface); }
+.bar-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; gap: 12px; }
+.bar-label { font-size: 18px; text-align: center; }
+.bar {
+  position: relative; height: 26px; overflow: hidden;
+  border: 2px solid var(--text-2); border-radius: 6px;
+  background: var(--surface);
+}
+.bar-fill { position: absolute; top: 0; bottom: 0; right: 0; width: var(--w); background: var(--bar-fill); }
+.bar-grid {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(to left,
+    transparent 0, transparent calc(100% / var(--parts) - 1.5px),
+    var(--bar-line) calc(100% / var(--parts) - 1.5px), var(--bar-line) calc(100% / var(--parts)));
+}
+.bars-caption { font-size: 14px; color: var(--text-2); text-align: center; }
+
+.next-btn { margin-top: 16px; }
+.next-btn .icon { width: 22px; height: 22px; }
+
+/* ---------- صفحهٔ نتیجه ---------- */
+.result-card { padding: 28px 24px 24px; text-align: center; }
+.result-stars { display: flex; justify-content: center; align-items: flex-end; gap: 10px; margin-bottom: 12px; }
+.big-star { width: 64px; height: 64px; }
+.big-star.is-mid { width: 84px; height: 84px; }
+.big-star path { fill: var(--surface-3); stroke: var(--border-strong); stroke-width: 1.5; stroke-linejoin: round; transition: fill .2s ease; }
+.big-star.is-on path { fill: var(--gold); stroke: var(--gold-stroke); }
+.big-star.is-on { animation: star-pop .55s cubic-bezier(.2, 1.6, .4, 1) both; animation-delay: var(--delay, 0s); }
+@keyframes star-pop { 0% { transform: scale(.3) rotate(-25deg); opacity: 0; } 100% { transform: none; opacity: 1; } }
+.result-card h2 { font-size: 28px; font-weight: 800; line-height: 1.4; }
+.result-msg { margin-top: 6px; color: var(--text-2); font-size: 16px; }
+.record-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px; padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--gold-soft); color: var(--gold-text);
+  font-size: 15px; font-weight: 700;
+}
+.record-badge .icon { width: 18px; height: 18px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
+.stat { padding: 12px 8px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); }
+.stat dt { font-size: 14px; color: var(--text-2); }
+.stat dd { margin: 2px 0 0; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.review { text-align: start; margin-bottom: 24px; }
+.review h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.review-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.review-item {
+  display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap;
+  padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-size: 15px;
+}
+.review-q { font-size: 20px; }
+.review-q .eq { gap: .3em; }
+.review-ans { display: flex; flex-wrap: wrap; gap: 6px 16px; color: var(--text-2); }
+.review-ans b { font-weight: 700; }
+.review-ans .ok { color: var(--green-text); }
+.review-ans .bad { color: var(--red-text); }
+.review-empty {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px; border-radius: var(--radius-sm);
+  background: var(--green-soft); color: var(--green-text); font-weight: 700;
+}
+.result-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.result-actions .btn-lg { grid-column: 1 / -1; }
+
+/* ---------- پنجره‌ها ---------- */
+dialog {
+  width: min(580px, calc(100% - 32px));
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+  padding: 0;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); color: var(--text);
+  box-shadow: var(--shadow-lg);
+}
+dialog[open] { display: flex; flex-direction: column; animation: dlg-in .22s ease both; }
+dialog::backdrop { background: rgba(15, 15, 15, .5); }
+@keyframes dlg-in { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+.dlg-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px 14px 20px; border-bottom: 1px solid var(--border); }
+.dlg-head h2 { flex: 1; font-size: 19px; font-weight: 800; }
+.dlg-body { padding: 18px 20px 20px; overflow-y: auto; }
+.dlg-body h3 { font-size: 16px; font-weight: 700; margin: 20px 0 8px; }
+.dlg-body p { line-height: 1.9; }
+.dlg-body p + p { margin-top: 8px; }
+.help-modes { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.help-modes li { display: flex; gap: 12px; align-items: flex-start; }
+.help-modes .mode-icon { width: 40px; height: 40px; flex: none; }
+.help-modes strong { display: block; font-size: 16px; }
+.help-modes p { font-size: 15px; color: var(--text-2); line-height: 1.8; }
+.help-list { margin: 0; padding-inline-start: 20px; display: grid; gap: 6px; font-size: 15px; line-height: 1.8; }
+kbd {
+  display: inline-block; min-width: 26px; padding: 0 6px;
+  border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 6px;
+  background: var(--surface-2);
+  font-family: inherit; font-size: 14px; text-align: center; line-height: 1.6;
+}
+.dlg-confirm { width: min(420px, calc(100% - 32px)); }
+.dlg-confirm .dlg-body { text-align: center; padding: 24px; }
+.dlg-confirm h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.dlg-confirm p { color: var(--text-2); }
+.dlg-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+.about-credit {
+  margin-top: 16px; padding: 12px 14px;
+  border-radius: var(--radius-sm); background: var(--surface-2); border: 1px solid var(--border);
+}
+
+#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+
+/* ---------- واکنش‌گرا ---------- */
+@media (max-width: 600px) {
+  .app { padding: 12px 16px 16px; gap: 12px; }
+  .site-header { padding: 2px 0 0; }
+  .header-fs { display: none; }
+  .home-card { padding: 18px 16px; }
+  .hero { gap: 12px; margin-bottom: 20px; }
+  .logo { width: 52px; height: 52px; }
+  .hero h1 { font-size: 24px; }
+  .hero p { font-size: 14px; }
+  .mode-grid { gap: 10px; margin-bottom: 20px; }
+  .mode-card { grid-template-columns: minmax(0, 1fr); row-gap: 6px; padding: 12px; align-content: start; }
+  .mode-card .mode-icon { grid-row: auto; width: 40px; height: 40px; }
+  .mode-title { padding-inline-end: 0; }
+  .level-row { gap: 8px; margin-bottom: 20px; }
+  .settings { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 20px; }
+  .game-top { padding: 10px 12px; gap: 6px; }
+  .game-title { font-size: 16px; gap: 8px; }
+  .game-title .mode-icon { display: none; }
+  .game-body { padding: 14px 14px 16px; }
+  .q-stem { font-size: 40px; min-height: 104px; gap: 14px; }
+  .q-prompt { font-size: 17px; }
+  .options { gap: 10px; }
+  .opt { min-height: 88px; font-size: 28px; }
+  .opt-num { font-size: 32px; }
+  .opt-wide { min-height: 60px; font-size: 17px; }
+  .expr { font-size: 21px; gap: 8px 10px; padding: 10px 8px; }
+  .result-card { padding: 22px 16px 18px; }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .result-actions { grid-template-columns: minmax(0, 1fr); }
+  .big-star { width: 54px; height: 54px; }
+  .big-star.is-mid { width: 70px; height: 70px; }
+  .result-card h2 { font-size: 24px; }
+}
+@media (max-width: 360px) {
+  .level-tag { display: none; }
+  .opt { font-size: 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- چیدمان دوستونهٔ صفحهٔ بازی (نمایشگر پهن و تختهٔ هوشمند) ---------- */
+.side-idle { display: none; }
+.expr .eq { flex-wrap: wrap; justify-content: center; row-gap: 8px; }
+@media (min-width: 980px) {
+  .app.is-wide { max-width: 1080px; }
+  .game-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+  .game-side { position: sticky; top: 16px; }
+  .game-side .feedback { margin-top: 0; }
+  .side-idle {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 28px 20px;
+    border: 2px dashed var(--border-strong); border-radius: var(--radius);
+    background: var(--surface-2);
+    text-align: center; color: var(--text-2);
+  }
+  .side-idle strong { font-size: 17px; color: var(--text); }
+  .side-idle p { font-size: 15px; line-height: 1.8; }
+  .idle-icon {
+    display: grid; place-items: center;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--gold-soft); color: var(--gold-text);
+  }
+  .idle-icon .icon { width: 26px; height: 26px; }
+  .idle-keys { margin-top: 4px; }
+  .expr { font-size: 22px; }
+}
+@media (min-width: 980px) {
+  .game-side .q-hint { margin: 0 0 12px; padding: 14px 16px; font-size: 16px; border: 1px solid var(--gold); }
+}
+/* لپ‌تاپ‌های کم‌ارتفاع (مثلاً ۱۳۶۶×۷۶۸): همه‌چیز بدون اسکرول جا شود */
+@media (min-width: 980px) and (max-height: 760px) {
+  .app.is-wide { padding-top: 8px; gap: 10px; }
+  .app.is-wide .site-header { padding-top: 2px; }
+  .game-top { padding: 8px 16px; }
+  .game-body { padding: 12px 20px 16px; }
+  .status-row { margin-bottom: 6px; }
+  .progress { margin-bottom: 10px; }
+  .timer { margin-bottom: 10px; }
+  .q-card { padding: 12px 16px 14px; margin-bottom: 12px; }
+  .q-prompt { margin-bottom: 4px; }
+  .q-stem { min-height: 88px; font-size: 40px; }
+  .opt { min-height: 78px; }
+  .opt-wide { min-height: 54px; }
+  .side-idle { padding: 20px 16px; }
+}
+.q-card:focus, .result-card h2:focus { outline: none; }
+@media (max-width: 600px) {
+  .combo-chip .chip-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media (max-width: 420px) {
+  .game-top [data-open="dlg-help"] { display: none; }
+}
+</style>
+</head>
+<body>
+  <!-- آیکون‌ها (SVG داخلی؛ بدون وابستگی به فایل یا ایموجی) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.3A8.2 8.2 0 0 1 9.7 4 8.5 8.5 0 1 0 20 14.3z"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5.5h4V20"/></symbol>
+      <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.9.7c0 1.7-2.5 2.2-2.5 3.8"/><path d="M12 17.2h.01"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6h.01"/></symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18.2 6.5a7.8 7.8 0 0 1 0 11"/></symbol>
+      <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="m16 9.5 5 5"/><path d="m21 9.5-5 5"/></symbol>
+      <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.7 10.7c.7.6 1.2 1.4 1.2 2.3h5c0-.9.5-1.7 1.2-2.3A6 6 0 0 0 12 3z"/></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/></symbol>
+      <symbol id="i-shrink" viewBox="0 0 24 24"><path d="M9 4v5H4"/><path d="M15 4v5h5"/><path d="M9 20v-5H4"/><path d="M15 20v-5h5"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11"/><path d="M17.5 6.5l-11 11"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c.6 3.2-3.5 5-3.5 9a3.5 3.5 0 0 0 1.6 2.9c-.3-1.8.7-3.1 1.9-4 .2 1.4 1.1 2.3 2 3 .2-.9.1-1.8-.3-2.6 1.9 1.1 3.3 3.1 3.3 5.2A5 5 0 0 1 12 21a6 6 0 0 1-6-6c0-5 6-7 6-12z"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.2l2.7 5.5 6 .9-4.4 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6-4.4-4.2 6-.9z"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></symbol>
+      <symbol id="i-next" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></symbol>
+      <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4v4.5H9"/></symbol>
+      <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5.5a4 4 0 0 1-8 0z"/><path d="M8 6H5v1.5A3 3 0 0 0 8 10.5"/><path d="M16 6h3v1.5a3 3 0 0 1-3 3"/><path d="M12 13.5V17"/><path d="M8.5 20.5h7"/><path d="M10 17h4v3.5h-4z"/></symbol>
+      <symbol id="i-simplify" viewBox="0 0 24 24"><path d="M4 14h6v6"/><path d="M20 10h-6V4"/><path d="M14 10l6.5-6.5"/><path d="M3.5 20.5 10 14"/></symbol>
+      <symbol id="i-equal" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 10h8"/><path d="M8 14h8"/></symbol>
+      <symbol id="i-missing" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" stroke-dasharray="3 2.6"/><path d="M10 9.8a2.1 2.1 0 1 1 3 1.9c-.6.3-1 .8-1 1.5"/><path d="M12 16h.01"/></symbol>
+      <symbol id="i-compare" viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M8 20h8"/><path d="M5 7h14"/><path d="M5 7l-2.8 6a2.8 2.8 0 0 0 5.6 0z"/><path d="M19 7l-2.8 6a2.8 2.8 0 0 0 5.6 0z"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app">
+    <header class="site-header">
+      <div class="header-actions">
+        <button type="button" class="theme-btn" id="btn-theme" aria-label="تغییر به حالت تیره" title="تغییر به حالت تیره">
+          <svg class="icon" aria-hidden="true"><use id="theme-use" href="#i-moon"/></svg><span id="theme-label">حالت تیره</span>
+        </button>
+        <button type="button" class="icon-btn header-fs" id="btn-fullscreen" aria-label="تمام‌صفحه" title="تمام‌صفحه">
+          <svg class="icon" aria-hidden="true"><use id="fs-use" href="#i-expand"/></svg>
+        </button>
+      </div>
+      <div class="bismillah">به نام آفریدگار اندیشه و آگاهی؛ پدیدآورنده‌ی حکمت و دانایی</div>
+      <div class="school">دبستان شاهد پسرانهٔ مهندس قدم‌لی شبستر</div>
+    </header>
+
+    <main id="main">
+      <!-- ================= صفحهٔ اصلی ================= -->
+      <section class="screen" id="screen-home" aria-labelledby="home-title">
+        <div class="card home-card">
+          <div class="hero">
+            <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+              <rect class="l-bg" width="64" height="64" rx="16"/>
+              <circle class="l-light" cx="32" cy="32" r="20"/>
+              <path class="l-fill" d="M32 32V12a20 20 0 1 1-20 20z"/>
+              <path class="l-sep" d="M32 11v42M11 32h42"/>
+              <circle class="l-ring" cx="32" cy="32" r="20"/>
+            </svg>
+            <div>
+              <h1 id="home-title">بازی کسرها</h1>
+              <p>تمرین ساده کردن، کسرهای مساوی، عدد گمشده و مقایسهٔ کسرها؛ ویژهٔ پایهٔ چهارم دبستان</p>
+            </div>
+          </div>
+
+          <h2 class="step-title" id="lbl-mode"><span class="step-num">۱</span>نوع بازی را انتخاب کن</h2>
+          <div class="mode-grid" role="radiogroup" aria-labelledby="lbl-mode" id="mode-group">
+            <button type="button" class="mode-card m-simplify" role="radio" aria-checked="true" data-mode="simplify">
+              <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#i-simplify"/></svg></span>
+              <span class="mode-title">ساده کردن</span>
+              <span class="mode-desc">ساده‌ترین شکل کسر را پیدا کن</span>
+              <span class="mode-check" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+            </button>
+            <button type="button" class="mode-card m-equivalent" role="radio" aria-checked="false" data-mode="equivalent">
+              <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#i-equal"/></svg></span>
+              <span class="mode-title">کسرهای مساوی</span>
+              <span class="mode-desc">کسرِ مساوی را پیدا کن</span>
+              <span class="mode-check" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+            </button>
+            <button type="button" class="mode-card m-missing" role="radio" aria-checked="false" data-mode="missing">
+              <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#i-missing"/></svg></span>
+              <span class="mode-title">عدد گمشده</span>
+              <span class="mode-desc">جای خالی را درست پر کن</span>
+              <span class="mode-check" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+            </button>
+            <button type="button" class="mode-card m-compare" role="radio" aria-checked="false" data-mode="compare">
+              <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#i-compare"/></svg></span>
+              <span class="mode-title">مقایسهٔ کسرها</span>
+              <span class="mode-desc">کسرِ بزرگ‌تر را پیدا کن</span>
+              <span class="mode-check" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+            </button>
+          </div>
+
+          <h2 class="step-title" id="lbl-level"><span class="step-num">۲</span>سطح بازی</h2>
+          <div class="level-row" role="radiogroup" aria-labelledby="lbl-level" id="level-group">
+            <button type="button" class="level-btn" role="radio" aria-checked="true" data-level="easy"><span>آسان</span><span class="stars-mini" data-stars></span></button>
+            <button type="button" class="level-btn" role="radio" aria-checked="false" data-level="medium"><span>متوسط</span><span class="stars-mini" data-stars></span></button>
+            <button type="button" class="level-btn" role="radio" aria-checked="false" data-level="hard"><span>سخت</span><span class="stars-mini" data-stars></span></button>
+          </div>
+
+          <div class="settings">
+            <label class="toggle">
+              <input type="checkbox" role="switch" id="opt-timer" checked>
+              <span class="toggle-text"><strong>زمان‌دار</strong><small id="timer-desc">برای هر سؤال ۳۰ ثانیه</small></span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" role="switch" id="opt-sound" checked>
+              <span class="toggle-text"><strong>صدا</strong><small>صدای پاسخ‌ها و زمان</small></span>
+            </label>
+          </div>
+
+          <button type="button" class="btn btn-primary btn-lg" id="btn-start">
+            <svg class="icon icon-fill" aria-hidden="true"><use href="#i-play"/></svg>شروع بازی
+          </button>
+          <p class="home-meta" id="home-meta"></p>
+        </div>
+
+        <nav class="home-links" aria-label="راهنما و اطلاعات">
+          <button type="button" class="btn btn-ghost" data-open="dlg-help"><svg class="icon" aria-hidden="true"><use href="#i-help"/></svg>راهنما</button>
+          <button type="button" class="btn btn-ghost" data-open="dlg-about"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>دربارهٔ بازی</button>
+        </nav>
+      </section>
+
+      <!-- ================= صفحهٔ بازی ================= -->
+      <section class="screen" id="screen-game" hidden aria-label="بازی">
+        <div class="card game-card">
+          <div class="game-top">
+            <button type="button" class="icon-btn" id="btn-exit" aria-label="صفحهٔ اصلی" title="صفحهٔ اصلی">
+              <svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>
+            </button>
+            <div class="game-title">
+              <span class="mode-icon" id="g-mode-icon"><svg class="icon" aria-hidden="true"><use id="g-mode-use" href="#i-simplify"/></svg></span>
+              <span class="game-title-text" id="g-mode-name">ساده کردن</span>
+              <span class="level-tag" id="g-level-name">آسان</span>
+            </div>
+            <button type="button" class="icon-btn" id="btn-hint" aria-label="راهنمایی" title="راهنمایی (حذف یک گزینهٔ غلط)">
+              <svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg><span class="hint-count" id="hint-count" aria-hidden="true">۳</span>
+            </button>
+            <button type="button" class="icon-btn" id="btn-sound" aria-pressed="true" aria-label="صدا" title="صدا">
+              <svg class="icon" aria-hidden="true"><use id="sound-use" href="#i-sound"/></svg>
+            </button>
+            <button type="button" class="icon-btn" data-open="dlg-help" aria-label="راهنما" title="راهنما">
+              <svg class="icon" aria-hidden="true"><use href="#i-help"/></svg>
+            </button>
+          </div>
+
+          <div class="game-body">
+            <div class="game-main">
+              <div class="status-row">
+                <div class="q-counter" id="q-counter">سؤال ۱ از ۱۰</div>
+                <div class="stats">
+                  <span class="stat-chip combo-chip" id="combo-chip" title="پاسخ‌های درستِ پشت سر هم" hidden>
+                    <svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg><span id="combo-val">۲</span><span class="chip-text">درستِ پشت سر هم</span>
+                  </span>
+                  <span class="stat-chip score-chip" id="score-chip">
+                    <svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><span id="score-val">۰</span> امتیاز
+                  </span>
+                </div>
+              </div>
+              <div class="progress" id="progress" aria-hidden="true"></div>
+
+              <div class="timer" id="timer">
+                <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+                <div class="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
+                <span class="timer-text"><span id="timer-sec">۳۰</span> ثانیه</span>
+              </div>
+
+              <div class="q-card" id="q-card">
+                <p class="q-prompt" id="q-prompt"></p>
+                <div class="q-stem" id="q-stem"></div>
+                <div class="q-hint" id="q-hint" hidden></div>
+              </div>
+
+              <div class="options" id="options" role="group" aria-label="گزینه‌ها"></div>
+            </div>
+
+            <div class="game-side">
+              <div class="side-idle" id="side-idle">
+                <span class="idle-icon"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg></span>
+                <strong>گزینهٔ درست را انتخاب کن</strong>
+                <p>اگر کمک خواستی، دکمهٔ لامپ را بزن تا یک گزینهٔ غلط حذف شود.</p>
+                <p class="idle-keys"><kbd>۱</kbd> تا <kbd>۴</kbd> انتخاب گزینه · <kbd>Enter</kbd> سؤال بعد</p>
+              </div>
+              <div class="feedback" id="feedback" hidden></div>
+              <button type="button" class="btn btn-primary btn-lg next-btn" id="btn-next" hidden>
+                <span id="next-label">سؤال بعدی</span><svg class="icon" aria-hidden="true"><use href="#i-next"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= صفحهٔ نتیجه ================= -->
+      <section class="screen" id="screen-result" hidden aria-labelledby="result-title">
+        <div class="card result-card">
+          <div class="result-stars" id="result-stars" role="img"></div>
+          <h2 id="result-title" tabindex="-1"></h2>
+          <p class="result-msg" id="result-msg"></p>
+          <div class="record-badge" id="record-badge" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#i-trophy"/></svg>رکورد تازه در این مرحله!
+          </div>
+          <dl class="stats-grid" id="stats-grid"></dl>
+          <section class="review" id="review" aria-labelledby="review-title"></section>
+          <div class="result-actions">
+            <button type="button" class="btn btn-primary btn-lg" id="btn-next-level"></button>
+            <button type="button" class="btn btn-secondary" id="btn-replay"><svg class="icon" aria-hidden="true"><use href="#i-replay"/></svg>تکرار همین مرحله</button>
+            <button type="button" class="btn btn-secondary" id="btn-home"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>صفحهٔ اصلی</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">توسعه‌دهنده: علی اکبر بابائی</footer>
+  </div>
+
+  <!-- ================= پنجرهٔ راهنما ================= -->
+  <dialog id="dlg-help" aria-labelledby="help-title">
+    <div class="dlg-head">
+      <h2 id="help-title">راهنمای بازی</h2>
+      <button type="button" class="icon-btn" data-close aria-label="بستن"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="dlg-body">
+      <ul class="help-modes">
+        <li>
+          <span class="mode-icon m-simplify"><svg class="icon" aria-hidden="true"><use href="#i-simplify"/></svg></span>
+          <div><strong>ساده کردن</strong><p>صورت و مخرج را بر یک عدد مشترک تقسیم کن و آن‌قدر ادامه بده که دیگر ساده نشود. گزینه‌ای درست است که «ساده‌ترین» شکل کسر باشد.</p></div>
+        </li>
+        <li>
+          <span class="mode-icon m-equivalent"><svg class="icon" aria-hidden="true"><use href="#i-equal"/></svg></span>
+          <div><strong>کسرهای مساوی</strong><p>اگر صورت و مخرج را در یک عدد ضرب یا بر یک عدد تقسیم کنیم، کسری مساوی به دست می‌آید. اضافه یا کم کردن یک عدد، کسر مساوی نمی‌سازد!</p></div>
+        </li>
+        <li>
+          <span class="mode-icon m-missing"><svg class="icon" aria-hidden="true"><use href="#i-missing"/></svg></span>
+          <div><strong>عدد گمشده</strong><p>ببین صورت یا مخرج در چه عددی ضرب (یا بر چه عددی تقسیم) شده است؛ همان کار را با عدد دیگر انجام بده.</p></div>
+        </li>
+        <li>
+          <span class="mode-icon m-compare"><svg class="icon" aria-hidden="true"><use href="#i-compare"/></svg></span>
+          <div><strong>مقایسهٔ کسرها</strong><p>با مخرج‌های برابر، کسری بزرگ‌تر است که صورتش بزرگ‌تر باشد. با صورت‌های برابر، کسری بزرگ‌تر است که مخرجش کوچک‌تر باشد. وگرنه دو کسر را هم‌مخرج کن.</p></div>
+        </li>
+      </ul>
+      <h3>امتیاز و ستاره</h3>
+      <ul class="help-list">
+        <li>هر پاسخ درست <span data-cfg="base">۱۰</span> امتیاز دارد و پاسخ سریع‌تر تا <span data-cfg="speed">۵</span> امتیاز جایزه می‌گیرد.</li>
+        <li>پاسخ‌های درستِ پشت سر هم، امتیاز بیشتری می‌آورند.</li>
+        <li>در هر مرحله <span data-cfg="hints">۳</span> بار می‌توانی از «راهنمایی» کمک بگیری: یک گزینهٔ غلط حذف می‌شود و امتیاز آن سؤال نصف می‌شود.</li>
+        <li>هر مرحله <span data-cfg="questions">۱۰</span> سؤال دارد؛ با <span data-cfg="s1">۵</span> پاسخ درست ۱ ستاره، با <span data-cfg="s2">۷</span> پاسخ درست ۲ ستاره و با <span data-cfg="s3">۹</span> پاسخ درست ۳ ستاره می‌گیری.</li>
+        <li>اگر زمان تمام شود، پاسخ درست و راه‌حلش را می‌بینی تا یاد بگیری.</li>
+      </ul>
+      <h3>صفحه‌کلید</h3>
+      <p>کلیدهای <kbd>۱</kbd> تا <kbd>۴</kbd> برای انتخاب گزینه و <kbd>Enter</kbd> برای رفتن به سؤال بعد.</p>
+    </div>
+  </dialog>
+
+  <!-- ================= پنجرهٔ دربارهٔ بازی ================= -->
+  <dialog id="dlg-about" aria-labelledby="about-title">
+    <div class="dlg-head">
+      <h2 id="about-title">هدف و سازندهٔ بازی</h2>
+      <button type="button" class="icon-btn" data-close aria-label="بستن"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="dlg-body">
+      <p>این بازی برای تمرین و تقویت مهارت ساده‌سازی کسرها، تشخیص کسرهای مساوی، یافتن عدد گمشده و مقایسهٔ کسرها، ویژهٔ دانش‌آموزان پایهٔ چهارم دبستان طراحی شده است.</p>
+      <p>با پرسش‌های متنوع و زمان‌دار، دانش‌آموز به‌صورت تعاملی و سرگرم‌کننده با مفهوم صورت، مخرج، ساده‌سازی و تساوی کسرها آشنا می‌شود و پس از هر پاسخ، راه‌حل را همراه با شکل می‌بیند.</p>
+      <p class="about-credit">توسعه‌دهندهٔ بازی: علی اکبر بابائی، آموزگار شاغل در دبستان شاهد پسرانهٔ مهندس قدم‌لی شبستر.</p>
+    </div>
+  </dialog>
+
+  <!-- ================= تأیید خروج ================= -->
+  <dialog id="dlg-exit" class="dlg-confirm" aria-labelledby="exit-title" aria-describedby="exit-desc">
+    <div class="dlg-body">
+      <h2 id="exit-title">از این مرحله خارج می‌شوی؟</h2>
+      <p id="exit-desc">پیشرفتِ این مرحله ذخیره نمی‌شود.</p>
+      <div class="dlg-actions">
+        <button type="button" class="btn btn-primary" data-close autofocus>ادامهٔ بازی</button>
+        <button type="button" class="btn btn-secondary" id="btn-exit-confirm">خروج</button>
+      </div>
+    </div>
+  </dialog>
+
+  <canvas id="confetti" aria-hidden="true" hidden></canvas>
+  <div class="sr-only" id="sr-status" role="status" aria-live="polite"></div>
+  <noscript><p style="padding:16px;text-align:center">برای اجرای بازی، جاوااسکریپتِ مرورگر را فعال کنید.</p></noscript>
+
+  <script src="kasr.js"></script>
+
+</body>
+</html>
